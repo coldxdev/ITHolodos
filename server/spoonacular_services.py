@@ -26,31 +26,31 @@ def get_list_ingredients(name: str) -> List:
     return list_ingredients
 
 
-def get_ingredient_by_id(id: int) -> dict:
+def get_ingredient_by_id(pk: int) -> dict:
     """
     Returns Dict of ingredient information founded by id
-    :param id: Ingredient id
+    :param pk: Ingredient id
     :return: Dict
     """
-    response_json = _request_ingredient_information_by_id_api(id)
-    filter_keys = ['id', 'name', 'possibleUnits',
-                   'categoryPath', 'image']
+    response_json = _request_ingredient_information_by_id_api(pk)
+    filter_keys = ["id", "name", "possibleUnits",
+                   "categoryPath", "image"]
     ingredient = {key: response_json[key] for key in filter_keys}
     ingredient["image"] = _update_img_link(ingredient.get("image"))
     return ingredient
 
 
-def _request_ingredient_information_by_id_api(id: int) -> Json:
+def _request_ingredient_information_by_id_api(pk: int) -> Json:
     """
     Returns json of ingredient information founded by id
     using SpoonacularAPI
-    :param name: Id of ingredient
+    :param pk: id of ingredient
     :return: Json
     """
     try:
         response = requests.get(
-            f"https://api.spoonacular.com/food/"
-            f"ingredients/{id}/information"
+            "https://api.spoonacular.com/food/"
+            f"ingredients/{pk}/information"
             f"?apiKey={SPOONCULAR_KEY}"
         )
         return response.json()
@@ -67,7 +67,7 @@ def _request_ingredient_by_name_api(name: str) -> Json:
     """
     try:
         response = requests.get(
-            f"https://api.spoonacular.com/food/"
+            "https://api.spoonacular.com/food/"
             f"ingredients/search?query={name}"
             f"&number=5&apiKey={SPOONCULAR_KEY}",
         )
