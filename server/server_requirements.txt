@@ -6,3 +6,5 @@ python-dotenv
 python-jose[cryptography]
 python-multipart
 sqlalchemy
+requests
+loguru

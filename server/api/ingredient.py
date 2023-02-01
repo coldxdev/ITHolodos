@@ -2,6 +2,7 @@
 
 from fastapi import APIRouter
 
+from ..spoonacular_services import get_list_ingredients
 
 router = APIRouter(
     prefix='/ingredients',
@@ -10,5 +11,5 @@ router = APIRouter(
 
 
 @router.get("/")
-def get_ingredients(key_words: str):
-    return {"key_words": key_words}
+def get_ingredients(key_word: str):
+    return get_list_ingredients(key_word)
