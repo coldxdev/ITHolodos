@@ -1,3 +1,5 @@
+"""Introduce ingredient routers"""
+
 from fastapi import APIRouter
 
 

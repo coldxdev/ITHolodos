@@ -1,3 +1,5 @@
+"""Init FastApi application"""
+
 from fastapi import FastAPI
 
 from . import api
