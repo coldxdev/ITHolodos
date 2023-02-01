@@ -1,14 +1,19 @@
 """File introduce helpers for working with Spoonacular API"""
 
 
-from typing import List
+from typing import List, Optional
 
 import requests
 from loguru import logger
 
 from pydantic.types import Json
+from fastapi import (
+    HTTPException,
+    status,
+)
 
 from .local_settings import SPOONCULAR_KEY
+from .models.spoonacular_api import MessageJsonSchema
 
 
 def get_list_ingredients(name: str) -> List:
@@ -33,6 +38,10 @@ def get_ingredient_by_id(pk: int) -> dict:
     :return: Dict
     """
     response_json = _request_ingredient_information_by_id_api(pk)
+
+    if response_json is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND)
+
     filter_keys = ["id", "name", "possibleUnits",
                    "categoryPath", "image"]
     ingredient = {key: response_json[key] for key in filter_keys}
@@ -40,12 +49,12 @@ def get_ingredient_by_id(pk: int) -> dict:
     return ingredient
 
 
-def _request_ingredient_information_by_id_api(pk: int) -> Json:
+def _request_ingredient_information_by_id_api(pk: int) -> Optional[Json]:
     """
     Returns json of ingredient information founded by id
     using SpoonacularAPI
     :param pk: id of ingredient
-    :return: Json
+    :return: Json or None if Json is not valid
     """
     try:
         response = requests.get(
@@ -53,7 +62,11 @@ def _request_ingredient_information_by_id_api(pk: int) -> Json:
             f"ingredients/{pk}/information"
             f"?apiKey={SPOONCULAR_KEY}"
         )
-        return response.json()
+        if _check_message_json(response):
+            return None
+        else:
+            return response.json()
+
     except Exception as ex:
         logger.warning(ex)
 
@@ -84,3 +97,16 @@ def _update_img_link(img_name: str) -> str:
     """
     _img_link = "https://spoonacular.com/cdn/ingredients_500x500/{img_name}"
     return _img_link.format(img_name=img_name)
+
+
+def _check_message_json(obj: Json) -> bool:
+    """
+    Check if a JSON is a valid MessageJsonSchema
+    :param obj: Json which we want to check
+    :return: bool
+    """
+    try:
+        MessageJsonSchema.parse_obj(obj.json())
+        return True
+    except:
+        return False
