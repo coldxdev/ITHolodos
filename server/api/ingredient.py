@@ -2,8 +2,10 @@
 
 from fastapi import APIRouter
 
-from ..spoonacular_services import get_list_ingredients,\
-                                   get_ingredient_by_id
+from ..spoonacular_services import (
+                                    get_list_ingredients,
+                                    get_ingredient_by_id
+                                    )
 
 router = APIRouter(
     prefix='/ingredients',

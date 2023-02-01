@@ -1,7 +1,7 @@
 """File introduce helpers for working with Spoonacular API"""
 
 
-from typing import List, Dict
+from typing import List
 
 import requests
 from loguru import logger
@@ -26,7 +26,7 @@ def get_list_ingredients(name: str) -> List:
     return list_ingredients
 
 
-def get_ingredient_by_id(id: int) -> Dict:
+def get_ingredient_by_id(id: int) -> dict:
     """
     Returns Dict of ingredient information founded by id
     :param id: Ingredient id
