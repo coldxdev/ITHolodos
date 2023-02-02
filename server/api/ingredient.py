@@ -8,9 +8,9 @@ from ..spoonacular_services import (
     get_ingredient_information,
 )
 
-from..models.ingredient import (
+from ..models.ingredient import (
     IngredientExtendedInfo,
-    IngredientShortInfo,
+    IngredientBaseInfo,
 )
 
 router = APIRouter(
@@ -20,8 +20,10 @@ router = APIRouter(
 
 
 @router.get("/",
-            response_model=List[IngredientShortInfo])
-def get_ingredients(key_word: str):
+            response_model=List[IngredientBaseInfo])
+def get_ingredients(
+        key_word: str
+):
     """
     Returns list of found ingredients, for example:
     `[
@@ -45,7 +47,9 @@ def get_ingredients(key_word: str):
 
 @router.get("/{ingredient_id}",
             response_model=IngredientExtendedInfo)
-def get_ingredient_info(ingredient_id: int):
+def get_ingredient_info(
+        ingredient_id: int
+):
     """
     Returns Json of ingredient with information:
     `{

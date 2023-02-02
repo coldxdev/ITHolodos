@@ -8,7 +8,7 @@ from pydantic import (
 )
 
 
-class IngredientShortInfo(BaseModel):
+class IngredientBaseInfo(BaseModel):
     """
     Json schema of ingredient shorten info
     """
@@ -17,12 +17,9 @@ class IngredientShortInfo(BaseModel):
     image: HttpUrl
 
 
-class IngredientExtendedInfo(BaseModel):
+class IngredientExtendedInfo(IngredientBaseInfo):
     """
     Json schema of ingredient extended info
     """
-    id: int
-    name: str
     units: List[str] = Field(alias="possibleUnits")
     categories: List[str] = Field(alias="categoryPath")
-    image: HttpUrl
