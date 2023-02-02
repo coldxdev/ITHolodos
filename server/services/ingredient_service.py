@@ -1,4 +1,4 @@
-"""File introduce helpers for working with Spoonacular API"""
+"""File introduce helpers for ingredient part of Spoonacular API"""
 
 
 from typing import List, Optional
@@ -12,8 +12,8 @@ from fastapi import (
     status,
 )
 
-from .local_settings import SPOONCULAR_KEY
-from .models.spoonacular_api import Message404JsonSchema
+from ..local_settings import SPOONCULAR_KEY
+from ..models.spoonacular_api import Message404JsonSchema
 
 
 def get_list_ingredients(name: str) -> List:

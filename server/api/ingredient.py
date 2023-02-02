@@ -3,7 +3,7 @@ from typing import List
 
 from fastapi import APIRouter
 
-from ..spoonacular_services import (
+from ..services.ingredient_service import (
     get_list_ingredients,
     get_ingredient_information,
 )
@@ -14,8 +14,8 @@ from ..models.ingredient import (
 )
 
 router = APIRouter(
-    prefix='/ingredients',
-    tags=['ingredients'],
+    prefix="/ingredients",
+    tags=["ingredients"],
 )
 
 
