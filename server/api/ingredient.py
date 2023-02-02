@@ -1,4 +1,5 @@
 """Introduce ingredient routers"""
+from typing import List
 
 from fastapi import APIRouter
 
@@ -7,14 +8,22 @@ from ..spoonacular_services import (
     get_ingredient_information,
 )
 
+from ..models.ingredient import (
+    IngredientExtendedInfo,
+    IngredientBaseInfo,
+)
+
 router = APIRouter(
     prefix='/ingredients',
     tags=['ingredients'],
 )
 
 
-@router.get("/")
-def get_ingredients(key_word: str):
+@router.get("/",
+            response_model=List[IngredientBaseInfo])
+def get_ingredients(
+        key_word: str
+):
     """
     Returns list of found ingredients, for example:
     `[
@@ -36,8 +45,11 @@ def get_ingredients(key_word: str):
     return get_list_ingredients(key_word)
 
 
-@router.get("/{ingredient_id}")
-def get_ingredient_info(ingredient_id: int):
+@router.get("/{ingredient_id}",
+            response_model=IngredientExtendedInfo)
+def get_ingredient_info(
+        ingredient_id: int
+):
     """
     Returns Json of ingredient with information:
     `{
