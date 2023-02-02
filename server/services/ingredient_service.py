@@ -1,4 +1,4 @@
-"""File introduce helpers for working with Spoonacular API"""
+"""File introduce helpers for ingredient part of Spoonacular API"""
 
 
 from typing import List, Optional
@@ -12,8 +12,8 @@ from fastapi import (
     status,
 )
 
-from .local_settings import SPOONCULAR_KEY
-from .models.spoonacular_api import Message404JsonSchema
+from ..local_settings import SPOONCULAR_KEY
+from ..models.spoonacular_api import Message404JsonSchema
 
 
 def get_list_ingredients(name: str) -> List:
@@ -46,6 +46,49 @@ def get_ingredient_information(pk: int) -> dict:
     ingredient = {key: response_json[key] for key in filter_keys}
     ingredient["image"] = _update_img_link(ingredient.get("image"))
     return ingredient
+
+
+def get_ingredients_auto_complete(
+        name: str,
+        number: int
+) -> List:
+    """
+    Returns filtered list of ingredients founded by name
+    :param name: string
+    :param number: int
+    :return: List
+    """
+    response_json = _request_ingredient_autocomplete_by_name(name,
+                                                             number)
+    list_ingredients = []
+    for ingredient in response_json:
+        ingredient["image"] = _update_img_link(ingredient.get("image"))
+        list_ingredients.append(ingredient)
+
+    return list_ingredients
+
+
+def _request_ingredient_autocomplete_by_name(
+        name: str,
+        number: int
+) -> Json:
+    """
+    Returns Json list of ingredients founded by name
+    using autocomplete with SpoonacularAPI
+    :param name: string name of ingredient
+    :param number: int number of ingredients
+    :return: Json
+    """
+    try:
+        response = requests.get(
+            "https://api.spoonacular.com/food"
+            "/ingredients/autocomplete"
+            f"?query={name}&number={number}"
+            f"&apiKey={SPOONCULAR_KEY}",
+        )
+        return response.json()
+    except Exception as ex:
+        logger.warning(ex)
 
 
 def _request_ingredient_info_by_id_api(pk: int) -> Optional[Json]:

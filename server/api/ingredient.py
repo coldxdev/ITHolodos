@@ -3,9 +3,10 @@ from typing import List
 
 from fastapi import APIRouter
 
-from ..spoonacular_services import (
+from ..services.ingredient_service import (
     get_list_ingredients,
     get_ingredient_information,
+    get_ingredients_auto_complete as get_auto_complete,
 )
 
 from ..models.ingredient import (
@@ -14,8 +15,8 @@ from ..models.ingredient import (
 )
 
 router = APIRouter(
-    prefix='/ingredients',
-    tags=['ingredients'],
+    prefix="/ingredients",
+    tags=["ingredients"],
 )
 
 
@@ -43,6 +44,38 @@ def get_ingredients(
     :return: List found ingredients
     """
     return get_list_ingredients(key_word)
+
+
+@router.get('/autocomplete')
+def get_ingredients_auto_complete(
+        key_word: str,
+        number: int = 5
+):
+    """
+    Returns Json list of ingredients
+    for example:
+    `
+    [
+        {
+            "name": "apple",
+            "image": "https://spoonacular.com/cdn/ingredients_500x500/apple.jpg"
+        },
+        {
+            "name": "applesauce",
+            "image": "https://spoonacular.com/cdn/ingredients_500x500/applesauce.png"
+         },
+        {
+            "name": "apple juice",
+            "image": "https://spoonacular.com/cdn/ingredients_500x500/apple-juice.jpg"
+        }
+    ]
+    `
+    \f
+    :param key_word:
+    :param number:
+    :return:
+    """
+    return get_auto_complete(key_word, number)
 
 
 @router.get("/{ingredient_id}",
@@ -77,3 +110,4 @@ def get_ingredient_info(
     :return: Json with detailed info of our ingredient
     """
     return get_ingredient_information(ingredient_id)
+
