@@ -6,6 +6,7 @@ from fastapi import APIRouter
 from ..services.ingredient_service import (
     get_list_ingredients,
     get_ingredient_information,
+    get_ingredients_auto_complete as get_auto_complete,
 )
 
 from ..models.ingredient import (
@@ -45,6 +46,38 @@ def get_ingredients(
     return get_list_ingredients(key_word)
 
 
+@router.get('/autocomplete')
+def get_ingredients_auto_complete(
+        key_word: str,
+        number: int = 5
+):
+    """
+    Returns Json list of ingredients
+    for example:
+    `
+    [
+        {
+            "name": "apple",
+            "image": "https://spoonacular.com/cdn/ingredients_500x500/apple.jpg"
+        },
+        {
+            "name": "applesauce",
+            "image": "https://spoonacular.com/cdn/ingredients_500x500/applesauce.png"
+         },
+        {
+            "name": "apple juice",
+            "image": "https://spoonacular.com/cdn/ingredients_500x500/apple-juice.jpg"
+        }
+    ]
+    `
+    \f
+    :param key_word:
+    :param number:
+    :return:
+    """
+    return get_auto_complete(key_word, number)
+
+
 @router.get("/{ingredient_id}",
             response_model=IngredientExtendedInfo)
 def get_ingredient_info(
@@ -78,10 +111,3 @@ def get_ingredient_info(
     """
     return get_ingredient_information(ingredient_id)
 
-
-@router.get("/autocomplete")
-def get_ingredients_autocomplete(
-        key_word: str,
-        number: int = 5
-):
-    pass
