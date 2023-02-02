@@ -77,3 +77,11 @@ def get_ingredient_info(
     :return: Json with detailed info of our ingredient
     """
     return get_ingredient_information(ingredient_id)
+
+
+@router.get("/autocomplete")
+def get_ingredients_autocomplete(
+        key_word: str,
+        number: int = 5
+):
+    pass
