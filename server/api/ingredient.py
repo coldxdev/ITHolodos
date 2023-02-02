@@ -4,7 +4,7 @@ from fastapi import APIRouter
 
 from ..spoonacular_services import (
     get_list_ingredients,
-    get_ingredient_by_id,
+    get_ingredient_information,
 )
 
 router = APIRouter(
@@ -64,4 +64,4 @@ def get_ingredient_info(ingredient_id: int):
     :param ingredient_id: Ingredient id
     :return: Json with detailed info of our ingredient
     """
-    return get_ingredient_by_id(ingredient_id)
+    return get_ingredient_information(ingredient_id)

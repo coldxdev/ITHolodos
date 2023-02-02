@@ -13,7 +13,7 @@ from fastapi import (
 )
 
 from .local_settings import SPOONCULAR_KEY
-from .models.spoonacular_api import MessageJsonSchema
+from .models.spoonacular_api import Message404JsonSchema
 
 
 def get_list_ingredients(name: str) -> List:
@@ -31,15 +31,13 @@ def get_list_ingredients(name: str) -> List:
     return list_ingredients
 
 
-def get_ingredient_by_id(pk: int) -> dict:
+def get_ingredient_information(pk: int) -> dict:
     """
     Returns Dict of ingredient information founded by id
     :param pk: Ingredient id
     :return: Dict
     """
-    response_json = _request_ingredient_information_by_id_api(pk)
-
-    if response_json is None:
+    if response_json := _request_ingredient_info_by_id_api(pk) is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
 
     filter_keys = ["id", "name", "possibleUnits",
@@ -49,7 +47,7 @@ def get_ingredient_by_id(pk: int) -> dict:
     return ingredient
 
 
-def _request_ingredient_information_by_id_api(pk: int) -> Optional[Json]:
+def _request_ingredient_info_by_id_api(pk: int) -> Optional[Json]:
     """
     Returns json of ingredient information founded by id
     using SpoonacularAPI
@@ -62,7 +60,7 @@ def _request_ingredient_information_by_id_api(pk: int) -> Optional[Json]:
             f"ingredients/{pk}/information"
             f"?apiKey={SPOONCULAR_KEY}"
         )
-        if _check_message_json(response):
+        if _check_404_message_json(response):
             return None
         else:
             return response.json()
@@ -99,14 +97,15 @@ def _update_img_link(img_name: str) -> str:
     return _img_link.format(img_name=img_name)
 
 
-def _check_message_json(obj: Json) -> bool:
+def _check_404_message_json(obj: Json) -> bool:
     """
-    Check if a JSON is a valid MessageJsonSchema
+    Checks if a JSON is a valid Message404JsonSchema
     :param obj: Json which we want to check
     :return: bool
     """
     try:
-        MessageJsonSchema.parse_obj(obj.json())
+        Message404JsonSchema.parse_obj(obj.json())
         return True
-    except:
+    except Exception as ex:
+        logger.debug(ex)
         return False
