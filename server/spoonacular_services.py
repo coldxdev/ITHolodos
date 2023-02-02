@@ -37,7 +37,8 @@ def get_ingredient_information(pk: int) -> dict:
     :param pk: Ingredient id
     :return: Dict
     """
-    if response_json := _request_ingredient_info_by_id_api(pk) is None:
+    response_json = _request_ingredient_info_by_id_api(pk)
+    if response_json is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
 
     filter_keys = ["id", "name", "possibleUnits",
