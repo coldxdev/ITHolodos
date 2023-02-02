@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from . import (
     ingredient,
-    recipe
+    recipe,
 )
 
 
