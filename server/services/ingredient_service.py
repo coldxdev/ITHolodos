@@ -12,7 +12,7 @@ from fastapi import (
     status,
 )
 
-from ..local_settings import SPOONCULAR_KEY
+from ..config import SPOONCULAR_KEY
 from ..models.spoonacular_api import Message404JsonSchema
 
 

@@ -3,4 +3,4 @@ venv
 
 .idea
 
-server/local_settings.py
+server/.env

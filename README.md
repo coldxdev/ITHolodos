@@ -1,15 +1,15 @@
-##Server Part (Python FastAPI)
+# Server Part (Python FastAPI)
 
-> ***Requirements:***
-`pip install -r server_requirements.txt`
+## Run Server
+Add .env file to <b>server</b> directory
+Make Docker image: `make image`
+Make Docker container: `make container`
 
-> ***Run server:***
-`uvicorn server.app:app --reload`
+## Stop Server
+Delete Docker container: `make rmc`
+Delete Docker image:  `make rmi`
 
-> ***API***
+
+
+> ***Used API***
 > https://spoonacular.com/
-
-
-## Docker Run Server
-`docker build -t myimage .`
-`docker run -d --name mycontainer -p 8000:8000 myimage`
