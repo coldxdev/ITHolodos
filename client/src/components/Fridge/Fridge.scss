@@ -1,0 +1,70 @@
+@import '../../assets/styles/mixins.scss';
+
+.Fridge {
+    position: fixed;
+    left: 0;
+    top: calc(100% - var(--fridge-top-height));
+    height: calc(100% - var(--fridge-top-height));
+    z-index: 2;
+    width: 100%;
+    color: #fff;
+	overflow: hidden;
+    transition: top ease 0.3s;
+
+    &.opened {
+        height: calc(100% - (var(--header-height) + 30px));
+        top: calc(var(--header-height) + 15px);
+    }
+}
+
+.Fridge__wrapper {
+    background-color: var(--accent);
+    padding-bottom: rem(50);
+    border-radius: rem(35);
+    height: 100%;
+}
+
+.Fridge__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: rem(15);
+    cursor: pointer;
+}
+
+.Fridge__top-title {
+    font-size: rem(24);
+}
+
+.Fridge__btn {
+    padding: rem(5);
+    width: rem(35);
+    height: rem(35);
+    background-color: #fff;
+    border-radius: 50%;
+
+    & svg {
+        width: 100%;
+        height: 100%;
+        fill: var(--accent);
+    }
+}
+
+.Fridge__body {
+    padding: 0 rem(15);
+}
+
+.Fridge__select {
+    &:not(:last-child) {
+        margin-bottom: em(25);
+    }
+}
+
+.Fridge__list {
+    display: grid;
+	padding-right: rem(15);
+    grid-template-columns: repeat(5, 1fr);
+    gap: rem(30);
+	max-height: 500px;
+	overflow-y: auto;
+}

@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,regular,500,600,700&display=swap');
+@import 'null.scss';
+@import 'mixins.scss';
+
+:root {
+    --black: #000;
+    --accent: #8523d1;
+    --fridge-top-height: 60px;
+    --header-height: 58px;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    font-size: rem(16);
+    line-height: 1.2;
+    font-weight: 400;
+    height: 100%;
+    color: var(--black);
+}
+
+#root {
+    height: 100%;
+}
+
+.wrapper {
+}
+
+.container {
+    max-width: rem(850);
+    margin: 0 auto;
+    padding-left: rem(15);
+    padding-right: rem(15);
+}
