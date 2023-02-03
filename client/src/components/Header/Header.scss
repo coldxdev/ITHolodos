@@ -1,0 +1,13 @@
+@import "../../assets/styles/mixins";
+
+
+.Header{
+	background-color: #cac7c7;
+	padding: rem(15) 0;
+}
+
+.Header__wrapper{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}

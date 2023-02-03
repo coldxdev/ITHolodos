@@ -1,0 +1,27 @@
+@import "../../assets/styles/mixins.scss";
+
+.Button{
+	padding: rem(3) rem(10);
+	border-radius: rem(5);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid transparent;
+	transition: color ease .3s, background-color ease .3s, border-color ease .3s;
+	
+	&.primary{
+		color: #fff;
+		background-color: var(--black);
+		
+		&:hover{
+			background-color: #fff;
+			border-color: var(--black);
+			color: var(--black);
+		}
+	}
+
+	&.secondary{
+		color: var(--black);
+		background-color: #fff;
+	}
+}
