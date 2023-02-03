@@ -37,7 +37,8 @@ def _request_available_recipes_by_ingredients(ingredients: str) -> Json:
             "https://api.spoonacular.com/"
             "recipes/findByIngredients"
             f"?ingredients={ingredients}"
-            f"&number=5&apiKey={SPOONCULAR_KEY}"
+            "&ranking=1"
+            f"&number=100&apiKey={SPOONCULAR_KEY}"
         )
 
         return response.json()
