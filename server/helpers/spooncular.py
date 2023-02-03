@@ -47,7 +47,7 @@ def request_ingredient_info_by_id_api(pk: int) -> Optional[Json]:
             f"ingredients/{pk}/information"
             f"?apiKey={SPOONCULAR_KEY}"
         )
-        if _check_404_message_json(response):
+        if check_404_message_json(response):
             return None
         else:
             return response.json()
