@@ -20,10 +20,12 @@ router = APIRouter(
 )
 
 
-@router.get("/",
-            response_model=List[IngredientBaseInfo])
+@router.get(
+    "/",
+    response_model=List[IngredientBaseInfo],
+)
 def get_ingredients(
-        key_word: str
+        key_word: str,
 ):
     """
     Returns list of found ingredients, for example:
