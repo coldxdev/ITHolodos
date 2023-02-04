@@ -6,7 +6,7 @@ import requests
 from loguru import logger
 from pydantic.types import Json
 
-from ..local_settings import SPOONCULAR_KEY
+from ..config import SPOONCULAR_KEY
 
 
 def get_all_available_recipes(ingredients: str) -> List:
