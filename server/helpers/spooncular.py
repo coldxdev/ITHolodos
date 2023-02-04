@@ -1,6 +1,7 @@
 """Spooncular API services"""
 
-from typing import Optional
+from typing import Optional, List
+from urllib.parse import urlparse
 
 import requests
 from loguru import logger
@@ -47,7 +48,7 @@ def request_ingredient_info_by_id_api(pk: int) -> Optional[Json]:
             f"ingredients/{pk}/information"
             f"?apiKey={SPOONCULAR_KEY}"
         )
-        if _check_404_message_json(response):
+        if check_404_message_json(response):
             return None
         else:
             return response.json()
@@ -73,6 +74,75 @@ def request_ingredient_by_name_api(name: str) -> Json:
         logger.warning(ex)
 
 
+def request_recipe_info_by_id(recipe_id: int) -> Optional[Json]:
+    """
+    Returns json of detail info for recipe by id
+    using SpoonacularAPI
+    :param recipe_id: int id of recipe
+    :return: Json or None if recipe doesn't exist
+    """
+    try:
+        response = requests.get(
+            "https://api.spoonacular.com/recipes"
+            f"/{recipe_id}/information"
+            "?includeNutrition=false"
+            f"&number=100&apiKey={SPOONCULAR_KEY}"
+        )
+
+        if check_404_message_json(response):
+            return None
+        else:
+            return response.json()
+
+    except Exception as ex:
+        logger.warning(ex)
+
+
+def request_recipe_instruction_by_id(recipe_id: int) -> Optional[Json]:
+    """
+    Returns json of instruction of recipe by id
+    using SpoonacularAPI
+    :param recipe_id: int id of recipe
+    :return: Json
+    """
+    try:
+        response = requests.get(
+            "https://api.spoonacular.com/recipes"
+            f"/{recipe_id}/analyzedInstructions"
+            f"?apiKey={SPOONCULAR_KEY}"
+        )
+
+        if check_404_message_json(response):
+            return None
+        else:
+            return response.json()
+
+    except Exception as ex:
+        logger.warning(ex)
+
+
+def request_available_recipes_by_ingredients(ingredients: str) -> Json:
+    """
+    Returns json list founded recipes by ingredients
+    using SpoonacularAPI
+    :param ingredients: String of ingredients
+                        example: "boysenberries,honey,white wine vinegar"
+    :return: Json
+    """
+    try:
+        response = requests.get(
+            "https://api.spoonacular.com/"
+            "recipes/findByIngredients"
+            f"?ingredients={ingredients}"
+            "&ranking=1"
+            f"&number=100&apiKey={SPOONCULAR_KEY}"
+        )
+
+        return response.json()
+    except Exception as ex:
+        logger.warning(ex)
+
+
 def check_404_message_json(obj: Json) -> bool:
     """
     Checks if a JSON is a valid Message404JsonSchema
@@ -87,11 +157,97 @@ def check_404_message_json(obj: Json) -> bool:
         return False
 
 
-def update_img_link(img_name: str) -> str:
+def update_img_link(img_name: str,
+                    img_link_pattern: str) -> str:
     """
-    Updates image link by image name
+    Updates image link by image
+    name and img_link_pattern
+    :param img_link_pattern: pattern for url
     :param img_name: Image name
     :return: Image url
     """
-    _img_link = "https://spoonacular.com/cdn/ingredients_500x500/{img_name}"
-    return _img_link.format(img_name=img_name)
+    return img_link_pattern.format(img_name=img_name)
+
+
+def filter_keys(keys: List[str], target: Json) -> dict:
+    """
+    Filters dict from unnecessary keys
+    :param keys: Listr[str] keys which we want to remain
+    :param target:
+    :return:
+    """
+    return {key: target[key] for key in keys}
+
+
+def is_url(url: str) -> bool:
+    """
+    Checks if a string is valid url
+    :param url: str
+    :return: bool
+    """
+    try:
+        result = urlparse(url)
+        return all([result.scheme, result.netloc])
+    except ValueError:
+        return False
+
+
+def parse_instruction(instruction: Json) -> List:
+    """
+    Parses instruction json list for
+    numbers and steps for cooking
+    :param instruction: dict
+    :return: List of steps
+    """
+    parsed_instruction = []
+    step_counter = 1
+    for part in instruction:
+        for step in part["steps"]:
+            parsed_instruction.append({
+                "number": step_counter,
+                "step": step.get("step")
+            })
+            step_counter += 1
+    return parsed_instruction
+
+
+def filter_available_recipe_keys(recipe: dict) -> dict:
+    """
+    Removes keys from recipe which we don`t need
+    :param recipe: dict which we want to update
+    :return: filtered dict
+    """
+    keys_for_filtering = ["id", "title", "image",
+                          "usedIngredientCount", "missedIngredientCount",
+                          "missedIngredients", "usedIngredients"]
+    available_recipe = filter_keys(keys_for_filtering, recipe)
+
+    available_recipe["missedIngredients"] = filter_recipe_ingredient_keys(
+        available_recipe["missedIngredients"]
+    )
+    available_recipe["usedIngredients"] = filter_recipe_ingredient_keys(
+        available_recipe["usedIngredients"]
+    )
+
+    return available_recipe
+
+
+def filter_recipe_ingredient_keys(ingredients: List) -> List:
+    """
+    Removes keys of ingredient from ingredients list
+    which we don`t need
+    :param ingredients: List of ingredients
+    :return: filtered list of dicts
+    """
+    keys_for_filtering = ["id", "amount", "unit",
+                          "name", "image"]
+    filtered_ingredients = []
+    for ingredient in ingredients:
+        if not is_url(ingredient["image"]):
+            ingredient["image"] = update_img_link(
+                ingredient.get("image"),
+                "https://spoonacular.com/cdn/ingredients_100x100/{img_name}"
+            )
+        filtered_ingredients.append(filter_keys(keys_for_filtering, ingredient))
+
+    return filtered_ingredients
