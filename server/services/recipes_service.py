@@ -10,6 +10,7 @@ from fastapi import (
     status,
 )
 
+from ..config import SPOONCULAR_KEY
 from ..local_settings import SPOONCULAR_KEY
 from ..services.helpers import (
     filter_keys,
