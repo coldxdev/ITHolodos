@@ -13,7 +13,10 @@ from fastapi import (
 )
 
 from ..local_settings import SPOONCULAR_KEY
-from ..models.spoonacular_api import Message404JsonSchema
+from ..services.helpers import (
+    check_404_message_json,
+    update_img_link
+)
 
 
 def get_list_ingredients(name: str) -> List:
@@ -26,7 +29,10 @@ def get_list_ingredients(name: str) -> List:
     list_ingredients = []
     if response_json.get("totalResults") > 0:
         for ingredient in response_json.get("results"):
-            ingredient["image"] = _update_img_link(ingredient.get("image"))
+            ingredient["image"] = update_img_link(
+                ingredient.get("image"),
+                "https://spoonacular.com/cdn/ingredients_500x500/{img_name}"
+            )
             list_ingredients.append(ingredient)
     return list_ingredients
 
@@ -44,7 +50,10 @@ def get_ingredient_information(pk: int) -> dict:
     filter_keys = ["id", "name", "possibleUnits",
                    "categoryPath", "image"]
     ingredient = {key: response_json[key] for key in filter_keys}
-    ingredient["image"] = _update_img_link(ingredient.get("image"))
+    ingredient["image"] = update_img_link(
+                ingredient.get("image"),
+                "https://spoonacular.com/cdn/ingredients_500x500/{img_name}"
+            )
     return ingredient
 
 
@@ -62,7 +71,10 @@ def get_ingredients_auto_complete(
                                                              number)
     list_ingredients = []
     for ingredient in response_json:
-        ingredient["image"] = _update_img_link(ingredient.get("image"))
+        ingredient["image"] = update_img_link(
+                ingredient.get("image"),
+                "https://spoonacular.com/cdn/ingredients_500x500/{img_name}"
+            )
         list_ingredients.append(ingredient)
 
     return list_ingredients
@@ -104,7 +116,7 @@ def _request_ingredient_info_by_id_api(pk: int) -> Optional[Json]:
             f"ingredients/{pk}/information"
             f"?apiKey={SPOONCULAR_KEY}"
         )
-        if _check_404_message_json(response):
+        if check_404_message_json(response):
             return None
         else:
             return response.json()
@@ -129,27 +141,3 @@ def _request_ingredient_by_name_api(name: str) -> Json:
         return response.json()
     except Exception as ex:
         logger.warning(ex)
-
-
-def _update_img_link(img_name: str) -> str:
-    """
-    Updates image link by image name
-    :param img_name: Image name
-    :return: Image url
-    """
-    _img_link = "https://spoonacular.com/cdn/ingredients_500x500/{img_name}"
-    return _img_link.format(img_name=img_name)
-
-
-def _check_404_message_json(obj: Json) -> bool:
-    """
-    Checks if a JSON is a valid Message404JsonSchema
-    :param obj: Json which we want to check
-    :return: bool
-    """
-    try:
-        Message404JsonSchema.parse_obj(obj.json())
-        return True
-    except Exception as ex:
-        logger.debug(ex)
-        return False

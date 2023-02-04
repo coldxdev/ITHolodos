@@ -2,7 +2,10 @@
 from fastapi import APIRouter, Request
 from fastapi_pagination import paginate, add_pagination
 
-from ..services.recipes_service import get_all_available_recipes
+from ..services.recipes_service import (
+    get_all_available_recipes,
+    get_recipe_info,
+)
 from ..models.page import Page
 
 router = APIRouter(
@@ -19,8 +22,11 @@ def get_available_recipes(
 ):
     """
     Returns paginated list of found recipes, for example:
-   `{
+    `
+        {
+
         "results": [
+
             {
                 "id": 656729,
                 "title": "Pork Chop with Honey, Mustard and Apples",
@@ -28,6 +34,7 @@ def get_available_recipes(
                 "usedIngredientCount": 1,
                 "missedIngredientCount": 1,
                 "missedIngredients": [
+
                     {
                         "id": 1032046,
                         "amount": 3,
@@ -37,6 +44,7 @@ def get_available_recipes(
                     }
                 ],
                 "usedIngredients": [
+
                     {
                         "id": 9003,
                         "amount": 3,
@@ -78,7 +86,9 @@ def get_available_recipes(
         "next": "/recipes/available?ingredients=apples%2Choney&page=5&size=2",
         "previous": "/recipes/available?ingredients=apples%2Choney&page=3&size=2",
         "first": "/recipes/available?ingredients=apples%2Choney&page=1&size=2",
-        "last": "/recipes/available?ingredients=apples%2Choney&page=50&size=2"`
+        "last": "/recipes/available?ingredients=apples%2Choney&page=50&size=2"
+
+        }`
     \f
     :param request: Request for taking params
     :param ingredients: Ingredients
@@ -90,4 +100,54 @@ def get_available_recipes(
     )
 
 
+@router.get("/detail/{recipe_id}")
+def get_detail_recipe_info(
+    recipe_id: int
+):
+    """
+    Returns detail info of recipe
+    with instruction by id
+    for example:
+    `
+
+        {
+            "id": 716276,
+            "title": "Doughnuts",
+            "image": "https://spoonacular.com/recipeImages/716276-556x370.jpg",
+            "extendedIngredients": [
+                {
+                  "id": 20081,
+                  "amount": 1.5,
+                  "unit": "cups",
+                  "name": "flour",
+                  "image": "https://spoonacular.com/cdn/ingredients_100x100/flour.png"
+                },
+                {
+                  "id": 19296,
+                  "amount": 30,
+                  "unit": "ml",
+                  "name": "honey",
+                  "image": "https://spoonacular.com/cdn/ingredients_100x100/honey.png"
+                },
+            ],
+            "instruction": [
+                {
+                  "number": 1,
+                  "step": "In a bowl mix the water with the yeast and honey"
+                },
+                {
+                  "number": 2,
+                  "step": "Heat up your oil and fry the doughnuts"
+                }
+            ],
+        }
+    `
+    \f
+    :param recipe_id: int
+    :return: Json
+    """
+    return get_recipe_info(recipe_id)
+
+
 add_pagination(router)
+
