@@ -2,21 +2,21 @@ import classNames from 'classnames';
 import React from 'react';
 import './Button.scss';
 
-enum ButtonTypes {
+enum ButtonTheme {
     PRIMARY = 'primary',
     SECONDARY = 'secondary',
 }
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
     className?: string;
-    type?: ButtonTypes.PRIMARY | ButtonTypes.SECONDARY;
+    theme?: ButtonTheme.PRIMARY | ButtonTheme.SECONDARY;
     href?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
     children,
-    type = ButtonTypes.PRIMARY,
+    type = ButtonTheme.PRIMARY,
     className,
     href,
     ...props
@@ -25,8 +25,8 @@ const Button: React.FC<ButtonProps> = ({
     const buttonClassNames = classNames(
         'Button',
         {
-            primary: type === ButtonTypes.PRIMARY,
-            secondary: type === ButtonTypes.SECONDARY,
+            primary: type === ButtonTheme.PRIMARY,
+            secondary: type === ButtonTheme.SECONDARY,
         },
         className
     );
