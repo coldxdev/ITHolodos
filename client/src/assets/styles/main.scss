@@ -3,8 +3,10 @@
 @import 'mixins.scss';
 
 :root {
-    --black: #000;
+    --black: #343d46;
     --accent: #8523d1;
+    --green: #159300;
+    --red: #e20000;
     --fridge-top-height: 60px;
     --header-height: 58px;
 }
@@ -27,6 +29,7 @@ body {
 }
 
 .wrapper {
+    padding-bottom: var(--fridge-top-height);
 }
 
 .container {

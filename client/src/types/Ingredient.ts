@@ -4,4 +4,5 @@ export interface IngredientI {
     image: string;
     amount?: number;
     unit?: string;
+    stored?: boolean;
 }

@@ -4,7 +4,7 @@ import { fetchIngredientByKeyword } from '../api/FridgeApi';
 import { debounce } from '../helpers/utils';
 import Fridge from './Fridge';
 import Header from './Header';
-import { useFridgeStore } from './store/store';
+import { useFridgeStore } from './store';
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -37,7 +37,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
     const debouncedGetIngredientByKeyword = useCallback(
         debounce(getIngredientByKeyword),
-        []
+    []
     );
 
     const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {

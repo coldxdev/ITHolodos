@@ -1,0 +1,35 @@
+@import '../../assets/styles/mixins.scss';
+
+.Recipes {
+    padding-bottom: rem(25);
+
+    &__title {
+        margin-bottom: rem(15);
+    }
+
+    &__items {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: rem(15);
+        padding-bottom: rem(15);
+        margin-bottom: rem(25);
+        position: relative;
+        min-height: rem(230);
+
+        @media (max-width: em(790)) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: em(490)) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__btn{
+        display: block;
+        margin: 0 auto;
+        font-size: rem(22);
+        padding: rem(12) rem(22);
+    }
+    
+}
