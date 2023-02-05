@@ -11,18 +11,48 @@
     justify-content: center;
     align-items: center;
     opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
+    padding: rem(15) 0;
+    overflow-y: auto;
     z-index: 111;
+    opacity: 0;
+    transition: opacity ease 0.2s;
 
-    &.visible {
+    &.enter-active{
         opacity: 1;
-        pointer-events: all;
-        visibility: visible;
+    }
+
+    &.enter-done{
+        opacity: 1;
+    }
+
+    &.exit-active{
+        opacity: 0;
+    }
+    &.exit-done{
+        opacity: 0;
     }
 }
 
 .NewItem__wrapper {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    transform: scale(0.88);
+    transition: transform ease 0.3s;
+}
+
+.NewItem.enter-active .NewItem__wrapper {
+    transform: scale(1);
+}
+
+.NewItem.enter-done .NewItem__wrapper {
+    transform: scale(1);
+}
+
+.NewItem__content {
     background-color: #fff;
     border-radius: rem(10);
     display: block;

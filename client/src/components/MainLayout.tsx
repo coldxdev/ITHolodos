@@ -7,49 +7,50 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-    const ingredients = [
-        {
-            id: 1,
-            name: 'Chicken',
-            image: 'https://www.themealdb.com/images/ingredients/Chicken.png',
-        },
-        {
-            id: 2,
-            name: 'Chicken',
-            image: 'https://www.themealdb.com/images/ingredients/Chicken.png',
-        },
-        {
-            id: 3,
-            name: 'Chicken',
-            image: 'https://www.themealdb.com/images/ingredients/Chicken.png',
-        },
-        {
-            id: 4,
-            name: 'Chicken',
-            image: 'https://www.themealdb.com/images/ingredients/Chicken.png',
-        },
-        {
-            id: 5,
-            name: 'Chicken',
-            image: 'https://www.themealdb.com/images/ingredients/Chicken.png',
-        },
-        {
-            id: 6,
-            name: 'Chicken',
-            image: 'https://www.themealdb.com/images/ingredients/Chicken.png',
-        },
-        {
-            id: 7,
-            name: 'Chicken',
-            image: 'https://www.themealdb.com/images/ingredients/Chicken.png',
-        },
-    ];
+    const {
+        storedIngredients,
+        ingredients,
+        addStoredIngredient,
+        removeStoredIngredient,
+        setStoreIngredient,
+        setIngredients,
+    } = useFridgeStore();
+
+    const [query, setQuery] = useState('');
+
+    useEffect(() => {
+        if (localStorage.getItem('ingredients')?.length) {
+            const stringifiendIngredients = localStorage.getItem('ingredients');
+            // @ts-ignore
+            setStoreIngredient(JSON.parse(stringifiendIngredients));
+        }
+    }, []);
+
+    const getIngredientByKeyword = async (query: string) => {
+        const ingredients = await fetchIngredientByKeyword(query);
+        setIngredients(ingredients);
+    };
+
+    const debouncedGetIngredientByKeyword = useCallback(
+        debounce(getIngredientByKeyword),
+        []
+    );
+
+    const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            debouncedGetIngredientByKeyword(e.target.value);
+        }
+        setQuery(e.target.value);
+    };
+
+    useEffect(() => {
+        localStorage.setItem('ingredients', JSON.stringify(storedIngredients));
+    }, [storedIngredients]);
 
     return (
         <div className='wrapper'>
             <Header />
-
-            {children}
+            <div className='container'>{children}</div>
 
             <Fridge ingredients={ingredients} resultsList={ingredients} />
         </div>

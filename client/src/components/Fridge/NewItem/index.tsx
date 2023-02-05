@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { CrossIcon, SearchIcon } from '../../../assets/images/icons';
-import { IngredientI } from '../../../types/app';
+import { IngredientI } from '../../../types/Ingredient';
 import Button from '../../../UI/Button';
 import './NewItem.scss';
 
@@ -19,6 +19,34 @@ const NewItem: React.FC<NewItemProps> = ({
     value,
     onClose,
 }) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (isVisible) {
+            inputRef?.current?.focus();
+        }
+    }, []);
+
+    //TODO: Create component newItemElem
+    const newItemElems = resultsList?.map(ingredient => {
+        return (
+            <li className='NewItem__item' key={ingredient.id}>
+                <div className='NewItem__item-info'>
+                    <div className='NewItem__item-img'>
+                        <img src={ingredient.image} alt='Photo' />
+                    </div>
+                    <div className='NewItem__item-name'>{ingredient.name}</div>
+                </div>
+                <Button
+                    className='NewItem__item-btn'
+                    onClick={() => onAdd(ingredient)}
+                >
+                    Add Item
+                </Button>
+            </li>
+        );
+    });
+
     return (
         <div
             className={classNames('NewItem', {
@@ -26,20 +54,32 @@ const NewItem: React.FC<NewItemProps> = ({
             })}
         >
             <div className='NewItem__wrapper'>
-                <button className='NewItem__close' onClick={onClose}>
-                    <CrossIcon />
-                </button>
-                <div className='NewItem__search'>
-                    <input
-                        className='NewItem__search-input'
-                        onChange={onChange}
-                        placeholder={'Find ingridient...'}
-                        value={value}
-                        type='search'
-                    />
-                    <Button className='NewItem__search-btn'>
-                        Search <SearchIcon />
-                    </Button>
+                <div className='NewItem__content'>
+                    <button className='NewItem__close' onClick={onClose}>
+                        <CrossIcon />
+                    </button>
+                    <div className='NewItem__search'>
+                        <input
+                            ref={inputRef}
+                            className='NewItem__search-input'
+                            onChange={onChange}
+                            placeholder={'Find ingridient...'}
+                            value={value}
+                            type='search'
+                        />
+                        <Button className='NewItem__search-btn'>
+                            Search <SearchIcon />
+                        </Button>
+                    </div>
+                    <ul className='NewItem__list'>
+                        {resultsList?.length ? (
+                            newItemElems
+                        ) : (
+                            <p className='NewItem__list-error'>
+                                Ingredients not found 😔
+                            </p>
+                        )}
+                    </ul>
                 </div>
                 <ul className='NewItem__list'>
                     <li className='NewItem__item'>
