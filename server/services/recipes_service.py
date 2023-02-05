@@ -69,7 +69,7 @@ def get_recipe_instruction(recipe_id: int) -> List:
         return instruction
 
     else:
-        raise HTTPException(status.HTTP_404_NOT_FOUND)
+        return None
 
 
 def get_recipes_random(number: int) -> List:
