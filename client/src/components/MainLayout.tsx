@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { fetchIngredientByKeyword } from '../api/FridgeApi';
+//@ts-ignore
 import { debounce } from '../helpers/utils';
 import Fridge from './Fridge';
 import Header from './Header';
@@ -24,7 +25,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     useEffect(() => {
         if (localStorage.getItem('ingredients')?.length) {
             const stringifiendIngredients = localStorage.getItem('ingredients');
-            setStoreIngredient(JSON.parse(stringifiendIngredients));
+           // @ts-ignore
+            setStoreIngredient(JSON.parse(stringifiendIngredients)); // @ts-nocheck
         }
     }, []);
 

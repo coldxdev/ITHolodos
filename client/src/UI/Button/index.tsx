@@ -21,7 +21,6 @@ const Button: React.FC<ButtonProps> = ({
     href,
     ...props
 }) => {
-  
     const buttonClassNames = classNames(
         'Button',
         {
@@ -30,12 +29,12 @@ const Button: React.FC<ButtonProps> = ({
         },
         className
     );
-
-    return href ? (
-        <a className={buttonClassNames} href={href} {...props}>
-            {children}
-        </a>
-    ) : (
+    return (
+        // href ? (
+        //     <a className={buttonClassNames} href={href} {...props}>
+        //         {children}
+        //     </a>
+        // ) : (
         <button className={buttonClassNames} {...props}>
             {children}
         </button>
