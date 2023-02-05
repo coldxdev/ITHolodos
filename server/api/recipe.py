@@ -5,6 +5,7 @@ from fastapi_pagination import paginate, add_pagination
 from ..services.recipes_service import (
     get_all_available_recipes,
     get_recipe_info,
+    get_recipes_random as random_recipes,
 )
 from ..models.page import Page
 
@@ -96,6 +97,53 @@ def get_available_recipes(
         get_all_available_recipes(ingredients),
         additional_data={'request': request},
     )
+
+
+@router.get(
+    "/random",
+)
+def get_recipes_random(
+        number: int
+):
+    """
+    Returns certain amount of random recipes
+    for example:
+    `
+
+        [
+            {
+                "id": 716276,
+                "title": "Doughnuts",
+                "image": "https://spoonacular.com/recipeImages/716276-556x370.jpg",
+                "extendedIngredients": [
+                    {
+                        "id": 20081,
+                        "amount": 1.5,
+                        "unit": "cups",
+                        "name": "flour",
+                        "image": "https://spoonacular.com/cdn/ingredients_100x100/flour.png"
+                    }]
+            },
+            {
+                "id": 633765,
+                "title": "Baked Rigatoni With Sausage",
+                "image": "https://spoonacular.com/recipeImages/716276-556x370.jpg",
+                "extendedIngredients": [
+                    {
+                        "id": 20081,
+                        "amount": 1.5,
+                        "unit": "cups",
+                        "name": "flour",
+                        "image": "https://spoonacular.com/cdn/ingredients_100x100/flour.png"
+                    }]
+            }
+        ]
+    `
+    \f
+    :param number: Number of random recipes
+    :return: Json list of random recipes
+    """
+    return random_recipes(number)
 
 
 @router.get("/detail/{recipe_id}")
