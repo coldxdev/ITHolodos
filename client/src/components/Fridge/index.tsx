@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from 'react';
+import React, { useState } from 'react';
 import './Fridge.scss';
 import { IngredientI } from '../../types/Ingredient';
 import Ingredient from '../Ingredient';
@@ -9,39 +9,54 @@ import { useFridgeStore } from '../store/store';
 import { CSSTransition } from 'react-transition-group';
 
 interface FridgeProps {
-    ingredients: IngredientI[] | null;
-    resultsList: IngredientI[];
+    storedIngredients: IngredientI[] | any[];
+    ingredients: IngredientI[];
+    onAddItem: (item: IngredientI) => void;
+    onRemoveItem: (ingredientI: number) => void;
+    query: string;
+    onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Fridge: React.FC<FridgeProps> = ({ ingredients, resultsList }) => {
+const Fridge: React.FC<FridgeProps> = ({
+    storedIngredients,
+    ingredients,
+    onRemoveItem,
+    onAddItem,
+    query,
+    onSearch,
+}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isVisibleNewItem, setIsVisibleNewItem] = useState(false);
-    const [query, setQuery] = useState('');
+
+    const { setIngredients } = useFridgeStore();
+
+    const onAdd = (ingredient: IngredientI) => {
+        if (storedIngredients?.find(i => i.id === ingredient.id)) return;
+        onAddItem(ingredient);
+    };
 
     const onTopClick = () => {
         setIsOpen(prev => !prev);
-    };
-
-    const onSearchIngredient = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setQuery(e.target.value);
     };
 
     const onCloseAddItem = () => {
         setIsVisibleNewItem(false);
     };
 
-    const onRemoveIngredient = (id: number) => {
-        console.log(`item with id ${id} removed`)
-    }
-
-
     const onPlusItem = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
+        if (!isOpen) {
+            setIsOpen(true);
+        }
         setIsVisibleNewItem(prevState => !prevState);
     };
 
-    const ingredientsElems = ingredients?.map(ingredient => (
-        <Ingredient onRemoveIngredient={onRemoveIngredient} {...ingredient} key={ingredient.id} />
+    const ingredientsElems = storedIngredients?.map(ingredient => (
+        <Ingredient
+            onRemoveIngredient={onRemoveItem}
+            key={ingredient.id}
+            {...ingredient}
+        />
     ));
 
     return (

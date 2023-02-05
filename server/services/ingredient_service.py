@@ -26,7 +26,10 @@ def get_list_ingredients(name: str) -> List:
     if response_json := request_ingredient_by_name_api(name):
         if response_json.get("totalResults") > 0:
             for ingredient in response_json.get("results"):
-                ingredient["image"] = update_img_link(ingredient.get("image"))
+                ingredient["image"] = update_img_link(
+                    ingredient.get("image"),
+                    "https://spoonacular.com/cdn/ingredients_500x500/{img_name}",
+                )
                 list_ingredients.append(ingredient)
     return list_ingredients
 
@@ -40,7 +43,10 @@ def get_ingredient_information(pk: int) -> dict:
     if response_json := request_ingredient_info_by_id_api(pk):
         filter_keys = ["id", "name", "possibleUnits", "categoryPath", "image"]
         ingredient = {key: response_json[key] for key in filter_keys}
-        ingredient["image"] = update_img_link(ingredient.get("image"))
+        ingredient["image"] = ingredient["image"] = update_img_link(
+                    ingredient.get("image"),
+                    "https://spoonacular.com/cdn/ingredients_500x500/{img_name}",
+                )
         return ingredient
     raise HTTPException(status.HTTP_404_NOT_FOUND)
 
@@ -55,6 +61,9 @@ def get_ingredients_auto_complete(name: str, number: int) -> List:
     list_ingredients = []
     if response_json := request_ingredient_autocomplete(name, number):
         for ingredient in response_json:
-            ingredient["image"] = update_img_link(ingredient.get("image"))
+            ingredient["image"] = ingredient["image"] = update_img_link(
+                    ingredient.get("image"),
+                    "https://spoonacular.com/cdn/ingredients_500x500/{img_name}",
+                )
             list_ingredients.append(ingredient)
     return list_ingredients

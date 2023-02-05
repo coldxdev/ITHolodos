@@ -9,6 +9,7 @@ interface NewItemProps {
     isVisible: boolean;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onClose: () => void;
+    onAdd: (ingredient: IngredientI) => void;
     value: string;
     resultsList: IngredientI[];
 }
@@ -18,6 +19,8 @@ const NewItem: React.FC<NewItemProps> = ({
     onChange,
     value,
     onClose,
+    onAdd,
+    resultsList,
 }) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -81,80 +84,6 @@ const NewItem: React.FC<NewItemProps> = ({
                         )}
                     </ul>
                 </div>
-                <ul className='NewItem__list'>
-                    <li className='NewItem__item'>
-                        <div className='NewItem__item-info'>
-                            <div className='NewItem__item-img'>
-                                <img
-                                    src='https://www.themealdb.com/images/ingredients/Chicken.png'
-                                    alt='Photo'
-                                />
-                            </div>
-                            <div className='NewItem__item-name'>Beef</div>
-                        </div>
-                        <Button className='NewItem__item-btn'>Add Item</Button>
-                    </li>
-                    <li className='NewItem__item'>
-                        <div className='NewItem__item-info'>
-                            <div className='NewItem__item-img'>
-                                <img
-                                    src='https://www.themealdb.com/images/ingredients/Chicken.png'
-                                    alt='Photo'
-                                />
-                            </div>
-                            <div className='NewItem__item-name'>Beef</div>
-                        </div>
-                        <Button className='NewItem__item-btn'>Add Item</Button>
-                    </li>
-                    <li className='NewItem__item'>
-                        <div className='NewItem__item-info'>
-                            <div className='NewItem__item-img'>
-                                <img
-                                    src='https://www.themealdb.com/images/ingredients/Chicken.png'
-                                    alt='Photo'
-                                />
-                            </div>
-                            <div className='NewItem__item-name'>Beef</div>
-                        </div>
-                        <Button className='NewItem__item-btn'>Add Item</Button>
-                    </li>
-                    <li className='NewItem__item'>
-                        <div className='NewItem__item-info'>
-                            <div className='NewItem__item-img'>
-                                <img
-                                    src='https://www.themealdb.com/images/ingredients/Chicken.png'
-                                    alt='Photo'
-                                />
-                            </div>
-                            <div className='NewItem__item-name'>Beef</div>
-                        </div>
-                        <Button className='NewItem__item-btn'>Add Item</Button>
-                    </li>
-                    <li className='NewItem__item'>
-                        <div className='NewItem__item-info'>
-                            <div className='NewItem__item-img'>
-                                <img
-                                    src='https://www.themealdb.com/images/ingredients/Chicken.png'
-                                    alt='Photo'
-                                />
-                            </div>
-                            <div className='NewItem__item-name'>Beef</div>
-                        </div>
-                        <Button className='NewItem__item-btn'>Add Item</Button>
-                    </li>
-                    <li className='NewItem__item'>
-                        <div className='NewItem__item-info'>
-                            <div className='NewItem__item-img'>
-                                <img
-                                    src='https://www.themealdb.com/images/ingredients/Chicken.png'
-                                    alt='Photo'
-                                />
-                            </div>
-                            <div className='NewItem__item-name'>Beef</div>
-                        </div>
-                        <Button className='NewItem__item-btn'>Add Item</Button>
-                    </li>
-                </ul>
             </div>
         </div>
     );

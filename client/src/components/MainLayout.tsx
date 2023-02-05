@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { fetchIngredientByKeyword } from '../api/FridgeApi';
+//@ts-ignore
+import { debounce } from '../helpers/utils';
 import Fridge from './Fridge';
 import Header from './Header';
+import { useFridgeStore } from './store/store';
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -52,7 +56,14 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             <Header />
             <div className='container'>{children}</div>
 
-            <Fridge ingredients={ingredients} resultsList={ingredients} />
+            <Fridge
+                query={query}
+                onSearch={onSearch}
+                onAddItem={addStoredIngredient}
+                onRemoveItem={removeStoredIngredient}
+                ingredients={ingredients}
+                storedIngredients={storedIngredients}
+            />
         </div>
     );
 };
