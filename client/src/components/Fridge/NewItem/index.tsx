@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { CrossIcon, SearchIcon } from '../../../assets/images/icons';
-import { IngredientI } from '../../../types/app';
+import { IngredientI } from '../../../types/Ingredient';
 import Button from '../../../UI/Button';
 import './NewItem.scss';
 
@@ -22,6 +22,15 @@ const NewItem: React.FC<NewItemProps> = ({
     onAdd,
     resultsList,
 }) => {
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (isVisible) {
+            inputRef?.current?.focus();
+        }
+    }, []);
+
+    //TODO: Create component newItemElem
     const newItemElems = resultsList?.map(ingredient => {
         return (
             <li className='NewItem__item' key={ingredient.id}>
@@ -54,6 +63,7 @@ const NewItem: React.FC<NewItemProps> = ({
                     </button>
                     <div className='NewItem__search'>
                         <input
+                            ref={inputRef}
                             className='NewItem__search-input'
                             onChange={onChange}
                             placeholder={'Find ingridient...'}
@@ -65,7 +75,13 @@ const NewItem: React.FC<NewItemProps> = ({
                         </Button>
                     </div>
                     <ul className='NewItem__list'>
-                        {resultsList?.length ? newItemElems : <p className='NewItem__list-error'>Ingredients not found 😔</p>}
+                        {resultsList?.length ? (
+                            newItemElems
+                        ) : (
+                            <p className='NewItem__list-error'>
+                                Ingredients not found 😔
+                            </p>
+                        )}
                     </ul>
                 </div>
             </div>

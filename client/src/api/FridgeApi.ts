@@ -1,4 +1,4 @@
-import { IngredientI } from '../types/app';
+import { IngredientI } from '../types/Ingredient';
 import axios from './index';
 
 export const fetchIngredientByKeyword = async (

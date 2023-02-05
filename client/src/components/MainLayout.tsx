@@ -25,8 +25,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     useEffect(() => {
         if (localStorage.getItem('ingredients')?.length) {
             const stringifiendIngredients = localStorage.getItem('ingredients');
-           // @ts-ignore
-            setStoreIngredient(JSON.parse(stringifiendIngredients)); // @ts-nocheck
+            // @ts-ignore
+            setStoreIngredient(JSON.parse(stringifiendIngredients));
         }
     }, []);
 
@@ -35,7 +35,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         setIngredients(ingredients);
     };
 
-    const debouncedGetIngredientByKeyword = useCallback(debounce(getIngredientByKeyword), []);
+    const debouncedGetIngredientByKeyword = useCallback(
+        debounce(getIngredientByKeyword),
+        []
+    );
 
     const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.value) {
@@ -51,7 +54,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     return (
         <div className='wrapper'>
             <Header />
-            {children}
+            <div className='container'>{children}</div>
 
             <Fridge
                 query={query}

@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Recipe = () => {
+const Recipe: React.FC = () => {
   return (
-	<div>Recipe</div>
+	  <div>Recipe</div>
   )
 }
 

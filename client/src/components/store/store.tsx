@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { IngredientI } from '../../types/app';
+import { IngredientI } from '../../types/Ingredient';
 
 interface FridgeState {
     ingredients: IngredientI[] | [];

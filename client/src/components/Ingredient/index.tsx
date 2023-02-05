@@ -1,5 +1,5 @@
 import React from 'react';
-import { IngredientI } from '../../types/app';
+import { IngredientI } from '../../types/Ingredient';
 import './Ingredient.scss';
 import classnames from 'classnames';
 import { CrossIcon } from '../../assets/images/icons';

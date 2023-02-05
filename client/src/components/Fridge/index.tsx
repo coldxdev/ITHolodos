@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import './Fridge.scss';
-import { IngredientI } from '../../types/app';
+import { IngredientI } from '../../types/Ingredient';
 import Ingredient from '../Ingredient';
 import classnames from 'classnames';
 import { PlusIcon } from '../../assets/images/icons';
 import NewItem from './NewItem';
 import { useFridgeStore } from '../store/store';
+import { CSSTransition } from 'react-transition-group';
 
 interface FridgeProps {
     storedIngredients: IngredientI[] | any[];
@@ -82,6 +83,7 @@ const Fridge: React.FC<FridgeProps> = ({
                     </select>
 
                     {storedIngredients?.length ? (
+                        //TODO: Add transition
                         <div className='Fridge__list'>{ingredientsElems}</div>
                     ) : (
                         <p className='Fridge__no-items'>
@@ -90,15 +92,21 @@ const Fridge: React.FC<FridgeProps> = ({
                     )}
                 </div>
             </div>
-
-            <NewItem
-                isVisible={isVisibleNewItem}
-                onChange={onSearch}
-                onClose={onCloseAddItem}
-                value={query}
-                resultsList={ingredients}
-                onAdd={onAdd}
-            />
+            <CSSTransition
+                timeout={350}
+                // classNames={'transition'}
+                unmountOnExit
+                in={isVisibleNewItem}
+            >
+                <NewItem
+                    isVisible={isVisibleNewItem}
+                    onChange={onSearch}
+                    onClose={onCloseAddItem}
+                    value={query}
+                    resultsList={ingredients}
+                    onAdd={onAdd}
+                />
+            </CSSTransition>
         </div>
     );
 };
