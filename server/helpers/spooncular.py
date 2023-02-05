@@ -5,7 +5,10 @@ from urllib.parse import urlparse
 
 import requests
 from loguru import logger
-
+from fastapi import (
+    HTTPException,
+    status,
+)
 from pydantic.types import Json
 
 from ..config import SPOONCULAR_KEY
@@ -113,7 +116,7 @@ def request_recipe_instruction_by_id(recipe_id: int) -> Optional[Json]:
         )
 
         if check_404_message_json(response):
-            return None
+            raise HTTPException(status.HTTP_404_NOT_FOUND)
         else:
             return response.json()
 
