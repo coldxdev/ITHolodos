@@ -5,7 +5,7 @@ import Ingredient from '../Ingredient';
 import classnames from 'classnames';
 import { PlusIcon } from '../../assets/images/icons';
 import NewItem from './NewItem';
-import { useFridgeStore } from '../store/store';
+import { useFridgeStore } from '../store';
 import { CSSTransition } from 'react-transition-group';
 
 interface FridgeProps {

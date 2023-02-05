@@ -1,9 +1,83 @@
-import React from 'react'
+import classNames from 'classnames';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowIcon, CrossIcon, TickIcon } from '../../assets/images/icons';
+import { AppRoutes } from '../../router';
+import { RecipeDetailI } from '../../types/Recipe';
+import './RecipeInfo.scss';
 
-const RecipeInfo = () => {
-  return (
-	<div>RecipeInfo</div>
-  )
-}
+interface RecipeInfoProps extends RecipeDetailI {}
 
-export default RecipeInfo
+const RecipeInfo: React.FC<RecipeInfoProps> = ({
+    image,
+    extendedIngredients,
+    title,
+    instruction,
+    id,
+}) => {
+    const ingredientElems = extendedIngredients.map(ingredient => (
+        <li className='RecipeInfo__ingredient' key={ingredient.id}>
+            <div className='RecipeInfo__ingredient-wrapper'>
+                <div className='RecipeInfo__ingredient-img'>
+                    <img
+                        src={ingredient.image}
+                        alt={`Ingredient ${ingredient.name}`}
+                    />
+                </div>
+
+                <p className='RecipeInfo__ingredient-text'>
+                    {ingredient.name} {ingredient.amount} {ingredient.unit}
+                </p>
+            </div>
+
+            <div
+                className={classNames('RecipeInfo__ingredient-status', {
+                    outOfStock: !ingredient.stored,
+                })}
+            >
+                {ingredient.stored ? <TickIcon /> : <CrossIcon />}
+            </div>
+        </li>
+    ));
+
+    return (
+        <div className='RecipeInfo'>
+            <Link className='RecipeInfo__back' to={AppRoutes.HOME}>
+                <ArrowIcon /> Go back
+            </Link>
+            <div className='RecipeInfo__body'>
+                <div className='RecipeInfo__img'>
+                    <img src={image} alt={`Photo recipe ${image}`} />
+                </div>
+
+                <div className='RecipeInfo__content'>
+                    <h2 className='RecipeInfo__title'>{title}</h2>
+                    <div className='RecipeInfo__ingredients'>
+                        <h5 className='RecipeInfo__ingredients-title'>
+                            Ingredients
+                        </h5>
+                        <ul className='RecipeInfo__list'>{ingredientElems}</ul>
+                    </div>
+
+                    <div className='RecipeInfo__recipe'>
+                        <h5 className='RecipeInfo__recipe-title'>
+                            Full Recipe
+                        </h5>
+                        <ol className='RecipeInfo__recipe-items'>
+                            {instruction.map(item => (
+                                <li
+                                    className='RecipeInfo__recipe-item'
+                                    key={item.number}
+                                >
+                                    {item.step}
+                                </li>
+                            ))}
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default RecipeInfo;

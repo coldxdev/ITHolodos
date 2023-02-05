@@ -1,6 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { RecipeItemI } from '../../../types/Recipe';
 import './RecipeItem.scss';
+import { AppRoutes } from '../../../router';
+import classNames from 'classnames';
+import cover from "../../../assets/images/cover.svg";
 
 interface RecipeItemProps extends RecipeItemI {}
 
@@ -12,23 +16,25 @@ const RecipeItem: React.FC<RecipeItemProps> = ({
     usedIngredients,
 }) => {
     return (
-        <div className={'RecipeItem'}>
+        <Link className={'RecipeItem'} to={AppRoutes.RECIPES + '/' + id}>
             <div className='RecipeItem__wrapper'>
                 <div className='RecipeItem__img'>
-                    <img src={image} alt={`Recipe ${title} illustration`} />
+                    <img src={image ? image : cover} alt={`Recipe ${title} illustration`} />
                 </div>
 
                 <h5 className='RecipeItem__title'>{title}</h5>
 
-                <p className='RecipeItem__required-products'>
-                    {missedIngredients.length > 1 ? (
-                        <p>You missed {missedIngredients.length}</p>
-                    ) : (
-                        <p>You have all</p>
-                    )}
+                <p
+                    className={classNames('RecipeItem__required-products', {
+                        missed: missedIngredients?.length,
+                    })}
+                >
+                    {missedIngredients?.length
+                        ? `You missed ${missedIngredients.length} ingrediets`
+                        : 'You have all'}
                 </p>
             </div>
-        </div>
+        </Link>
     );
 };
 

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { IngredientI } from '../../types/Ingredient';
+import { RecipeDetailI, RecipeItemI } from '../../types/Recipe';
 
 interface FridgeState {
     ingredients: IngredientI[] | [];
@@ -14,8 +15,7 @@ interface FridgeState {
 export const useFridgeStore = create<FridgeState>()(set => ({
     ingredients: [],
     storedIngredients: [],
-    setIngredients: items =>
-        set(state => ({ ingredients: items })),
+    setIngredients: items => set(state => ({ ingredients: items })),
     setStoreIngredient: items => set(state => ({ storedIngredients: items })),
     addStoredIngredient: item =>
         set(state => ({
@@ -30,4 +30,28 @@ export const useFridgeStore = create<FridgeState>()(set => ({
                 storedIngredients: filteredStoredIngredients,
             };
         }),
+}));
+
+interface RecipesState {
+    recipes: RecipeItemI[] | [];
+    setRecipes: (items: RecipeItemI[]) => void;
+    isLoading: boolean;
+    setIsLoading: (state: boolean) => void;
+}
+
+export const useRecipesStore = create<RecipesState>()(set => ({
+    recipes: [],
+    isLoading: false,
+    setRecipes: items => set(state => ({ recipes: items })),
+    setIsLoading: loadingState => set(state => ({ isLoading: loadingState })),
+}));
+
+interface RecipeDetailState {
+    recipeDetail: RecipeDetailI | {};
+    setRecipeDetail: (items: RecipeDetailI) => void;
+}
+
+export const useRecipeDetailStore = create<RecipeDetailState>()(set => ({
+    recipeDetail: {},
+    setRecipeDetail: data => set(state => ({ recipeDetail: data })),
 }));

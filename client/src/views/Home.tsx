@@ -1,32 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { fetchRecipesByIngredients } from '../api/RecipesApi';
+import Loader from '../components/Loader';
 import MainLayout from '../components/MainLayout';
 import Recipes from '../components/Recipes';
+import { useFridgeStore, useRecipesStore } from '../components/store';
 
 const Home: React.FC = () => {
-    const mockupRecipes = {
+    const { storedIngredients } = useFridgeStore();
+    const { recipes, setRecipes, isLoading, setIsLoading } = useRecipesStore();
+
+    const mockup = {
         results: [
             {
                 id: 673463,
                 title: 'Slow Cooker Apple Pork Tenderloin',
                 image: 'https://spoonacular.com/recipeImages/673463-312x231.jpg',
                 usedIngredientCount: 2,
-                missedIngredientCount: 2,
-                missedIngredients: [
-                    {
-                        id: 6008,
-                        amount: 2,
-                        unit: 'cups',
-                        name: 'beef broth',
-                        image: 'https://spoonacular.com/cdn/ingredients_100x100/beef-broth.png',
-                    },
-                    {
-                        id: 10218,
-                        amount: 1,
-                        unit: 'serving',
-                        name: 'pork tenderloin',
-                        image: 'https://spoonacular.com/cdn/ingredients_100x100/pork-tenderloin-raw.png',
-                    },
-                ],
+                missedIngredientCount: null,
+                missedIngredients: null,
                 usedIngredients: [
                     {
                         id: 9003,
@@ -783,9 +774,27 @@ const Home: React.FC = () => {
         last: '/recipes/available?ingredients=apple&page=10&size=10',
     };
 
+    const getRecipesByIngredients = async () => {
+        setIsLoading(true);
+        const recipes = await fetchRecipesByIngredients(storedIngredients);
+        setRecipes(recipes.results);
+        setIsLoading(false);
+    };
+
+    useEffect(() => {
+        if (storedIngredients.length) {
+            getRecipesByIngredients();
+        }
+    }, [storedIngredients]);
+
     return (
         <MainLayout>
-            <Recipes recipes={mockupRecipes.results} />
+            <Recipes
+                previos={mockup.previous}
+                next={mockup.next}
+                recipes={recipes}
+                isLoading={isLoading}
+            />
         </MainLayout>
     );
 };
