@@ -52,7 +52,9 @@ def get_all_available_recipes(ingredients: str) -> List:
     if response_json := request_available_recipes_by_ingredients(ingredients):
         for recipe in response_json:
             available_recipes.append(filter_available_recipe_keys(recipe))
-    return available_recipes
+        return available_recipes
+    else:
+        raise HTTPException(status.HTTP_404_NOT_FOUND)
 
 
 def get_recipe_instruction(recipe_id: int) -> List:

@@ -138,7 +138,11 @@ def request_available_recipes_by_ingredients(ingredients: str) -> Json:
             f"&number=100&apiKey={SPOONCULAR_KEY}"
         )
 
-        return response.json()
+        if check_404_message_json(response):
+            return None
+        else:
+            return response.json()
+
     except Exception as ex:
         logger.warning(ex)
 
