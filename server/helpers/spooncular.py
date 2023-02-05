@@ -138,7 +138,30 @@ def request_available_recipes_by_ingredients(ingredients: str) -> Json:
             f"&number=100&apiKey={SPOONCULAR_KEY}"
         )
 
-        return response.json()
+        if check_404_message_json(response):
+            return None
+        else:
+            return response.json()
+
+    except Exception as ex:
+        logger.warning(ex)
+
+
+def request_random_recipes(number: int) -> Json:
+    """
+    Returns json list founded random recipes
+    using SpoonacularAPI
+    :param number: number of recipes
+    :return: Json
+    """
+    try:
+        response = requests.get(
+            "https://api.spoonacular.com/"
+            "recipes/random"
+            f"?number={number}"
+            f"&apiKey={SPOONCULAR_KEY}",
+        )
+        return response.json().get("recipes")
     except Exception as ex:
         logger.warning(ex)
 

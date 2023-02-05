@@ -14,7 +14,8 @@ from ..helpers.spooncular import (
     request_available_recipes_by_ingredients,
     parse_instruction,
     filter_available_recipe_keys,
-    filter_recipe_ingredient_keys
+    filter_recipe_ingredient_keys,
+    request_random_recipes,
 )
 
 
@@ -51,7 +52,9 @@ def get_all_available_recipes(ingredients: str) -> List:
     if response_json := request_available_recipes_by_ingredients(ingredients):
         for recipe in response_json:
             available_recipes.append(filter_available_recipe_keys(recipe))
-    return available_recipes
+        return available_recipes
+    else:
+        raise HTTPException(status.HTTP_404_NOT_FOUND)
 
 
 def get_recipe_instruction(recipe_id: int) -> List:
@@ -68,4 +71,21 @@ def get_recipe_instruction(recipe_id: int) -> List:
     else:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
 
+
+def get_recipes_random(number: int) -> List:
+    """
+    Returns List of random filtered recipes
+    :param number: number of random recipes
+    :return: List of random recipes
+    """
+    recipes = []
+    keys_for_filtering = ["id", "title", "image",
+                          "extendedIngredients"]
+    if response_json := request_random_recipes(number):
+        for recipe in response_json:
+            filtered_recipe = filter_keys(keys_for_filtering, recipe)
+            filtered_recipe["extendedIngredients"] = filter_recipe_ingredient_keys(recipe["extendedIngredients"])
+            recipes.append(filtered_recipe)
+
+    return recipes
 
