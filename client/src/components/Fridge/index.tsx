@@ -1,45 +1,61 @@
-import React, { SyntheticEvent, useState } from 'react';
+import React, { useState } from 'react';
 import './Fridge.scss';
 import { IngredientI } from '../../types/app';
 import Ingredient from '../Ingredient';
 import classnames from 'classnames';
 import { PlusIcon } from '../../assets/images/icons';
 import NewItem from './NewItem';
+import { useFridgeStore } from '../store/store';
 
 interface FridgeProps {
-    ingredients: IngredientI[] | null;
-    resultsList: IngredientI[];
+    storedIngredients: IngredientI[] | any[];
+    ingredients: IngredientI[];
+    onAddItem: (item: IngredientI) => void;
+    onRemoveItem: (ingredientI: number) => void;
+    query: string;
+    onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Fridge: React.FC<FridgeProps> = ({ ingredients, resultsList }) => {
+const Fridge: React.FC<FridgeProps> = ({
+    storedIngredients,
+    ingredients,
+    onRemoveItem,
+    onAddItem,
+    query,
+    onSearch,
+}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isVisibleNewItem, setIsVisibleNewItem] = useState(false);
-    const [query, setQuery] = useState('');
+
+    const { setIngredients } = useFridgeStore();
+
+    const onAdd = (ingredient: IngredientI) => {
+        if (storedIngredients?.find(i => i.id === ingredient.id)) return;
+        onAddItem(ingredient);
+    };
 
     const onTopClick = () => {
         setIsOpen(prev => !prev);
-    };
-
-    const onSearchIngredient = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setQuery(e.target.value);
     };
 
     const onCloseAddItem = () => {
         setIsVisibleNewItem(false);
     };
 
-    const onRemoveIngredient = (id: number) => {
-        console.log(`item with id ${id} removed`)
-    }
-
-
     const onPlusItem = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
+        if (!isOpen) {
+            setIsOpen(true);
+        }
         setIsVisibleNewItem(prevState => !prevState);
     };
 
-    const ingredientsElems = ingredients?.map(ingredient => (
-        <Ingredient onRemoveIngredient={onRemoveIngredient} {...ingredient} key={ingredient.id} />
+    const ingredientsElems = storedIngredients?.map(ingredient => (
+        <Ingredient
+            onRemoveIngredient={onRemoveItem}
+            key={ingredient.id}
+            {...ingredient}
+        />
     ));
 
     return (
@@ -65,16 +81,23 @@ const Fridge: React.FC<FridgeProps> = ({ ingredients, resultsList }) => {
                         <option value='4'>Fish</option>
                     </select>
 
-                    <div className='Fridge__list'>{ingredientsElems}</div>
+                    {storedIngredients?.length ? (
+                        <div className='Fridge__list'>{ingredientsElems}</div>
+                    ) : (
+                        <p className='Fridge__no-items'>
+                            You can add products by clicking on the plus. 👆
+                        </p>
+                    )}
                 </div>
             </div>
 
             <NewItem
                 isVisible={isVisibleNewItem}
-                onChange={onSearchIngredient}
+                onChange={onSearch}
                 onClose={onCloseAddItem}
                 value={query}
-                resultsList={[]}
+                resultsList={ingredients}
+                onAdd={onAdd}
             />
         </div>
     );
