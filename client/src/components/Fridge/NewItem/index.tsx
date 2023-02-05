@@ -20,11 +20,9 @@ const NewItem: React.FC<NewItemProps> = ({
     value,
     onClose,
     onAdd,
-    resultsList
+    resultsList,
 }) => {
-
     const newItemElems = resultsList?.map(ingredient => {
-
         return (
             <li className='NewItem__item' key={ingredient.id}>
                 <div className='NewItem__item-info'>
@@ -33,7 +31,12 @@ const NewItem: React.FC<NewItemProps> = ({
                     </div>
                     <div className='NewItem__item-name'>{ingredient.name}</div>
                 </div>
-                <Button className='NewItem__item-btn' onClick={() => onAdd(ingredient)}>Add Item</Button>
+                <Button
+                    className='NewItem__item-btn'
+                    onClick={() => onAdd(ingredient)}
+                >
+                    Add Item
+                </Button>
             </li>
         );
     });
@@ -45,24 +48,26 @@ const NewItem: React.FC<NewItemProps> = ({
             })}
         >
             <div className='NewItem__wrapper'>
-                <button className='NewItem__close' onClick={onClose}>
-                    <CrossIcon />
-                </button>
-                <div className='NewItem__search'>
-                    <input
-                        className='NewItem__search-input'
-                        onChange={onChange}
-                        placeholder={'Find ingridient...'}
-                        value={value}
-                        type='search'
-                    />
-                    <Button className='NewItem__search-btn'>
-                        Search <SearchIcon />
-                    </Button>
+                <div className='NewItem__content'>
+                    <button className='NewItem__close' onClick={onClose}>
+                        <CrossIcon />
+                    </button>
+                    <div className='NewItem__search'>
+                        <input
+                            className='NewItem__search-input'
+                            onChange={onChange}
+                            placeholder={'Find ingridient...'}
+                            value={value}
+                            type='search'
+                        />
+                        <Button className='NewItem__search-btn'>
+                            Search <SearchIcon />
+                        </Button>
+                    </div>
+                    <ul className='NewItem__list'>
+                        {resultsList?.length ? newItemElems : <p className='NewItem__list-error'>Ingredients not found 😔</p>}
+                    </ul>
                 </div>
-                <ul className='NewItem__list'>
-                    {resultsList?.length ? newItemElems : <p>Not found</p>}
-                </ul>
             </div>
         </div>
     );

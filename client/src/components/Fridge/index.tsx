@@ -1,10 +1,11 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import './Fridge.scss';
 import { IngredientI } from '../../types/app';
 import Ingredient from '../Ingredient';
 import classnames from 'classnames';
 import { PlusIcon } from '../../assets/images/icons';
 import NewItem from './NewItem';
+import { useFridgeStore } from '../store/store';
 
 interface FridgeProps {
     storedIngredients: IngredientI[] | any[];
@@ -12,7 +13,7 @@ interface FridgeProps {
     onAddItem: (item: IngredientI) => void;
     onRemoveItem: (ingredientI: number) => void;
     query: string;
-    setQuery: Dispatch<SetStateAction<string>>;
+    onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Fridge: React.FC<FridgeProps> = ({
@@ -21,10 +22,12 @@ const Fridge: React.FC<FridgeProps> = ({
     onRemoveItem,
     onAddItem,
     query,
-    setQuery,
+    onSearch,
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isVisibleNewItem, setIsVisibleNewItem] = useState(false);
+
+    const { setIngredients } = useFridgeStore();
 
     const onAdd = (ingredient: IngredientI) => {
         if (storedIngredients?.find(i => i.id === ingredient.id)) return;
@@ -33,10 +36,6 @@ const Fridge: React.FC<FridgeProps> = ({
 
     const onTopClick = () => {
         setIsOpen(prev => !prev);
-    };
-
-    const onSearchIngredient = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setQuery(e.target.value);
     };
 
     const onCloseAddItem = () => {
@@ -86,7 +85,7 @@ const Fridge: React.FC<FridgeProps> = ({
                         <div className='Fridge__list'>{ingredientsElems}</div>
                     ) : (
                         <p className='Fridge__no-items'>
-                            You havn’t add any products in fridge
+                            You can add products by clicking on the plus. 👆
                         </p>
                     )}
                 </div>
@@ -94,7 +93,7 @@ const Fridge: React.FC<FridgeProps> = ({
 
             <NewItem
                 isVisible={isVisibleNewItem}
-                onChange={onSearchIngredient}
+                onChange={onSearch}
                 onClose={onCloseAddItem}
                 value={query}
                 resultsList={ingredients}

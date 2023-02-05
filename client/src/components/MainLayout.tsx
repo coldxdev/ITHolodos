@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { fetchIngredientByKeyword } from '../api/FridgeApi';
+import { debounce } from '../helpers/utils';
 import Fridge from './Fridge';
 import Header from './Header';
 import { useFridgeStore } from './store/store';
@@ -20,11 +21,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
     const [query, setQuery] = useState('');
 
-    const getIngredientByKeyword = async () => {
-        const ingredients = await fetchIngredientByKeyword(query);
-        setIngredients(ingredients);
-    };
-
     useEffect(() => {
         if (localStorage.getItem('ingredients')?.length) {
             const stringifiendIngredients = localStorage.getItem('ingredients');
@@ -32,11 +28,19 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         }
     }, []);
 
-    useEffect(() => {
-        if(query){
-            getIngredientByKeyword();
+    const getIngredientByKeyword = async (query: string) => {
+        const ingredients = await fetchIngredientByKeyword(query);
+        setIngredients(ingredients);
+    };
+
+    const debouncedGetIngredientByKeyword = useCallback(debounce(getIngredientByKeyword), []);
+
+    const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value) {
+            debouncedGetIngredientByKeyword(e.target.value);
         }
-    }, [query]);
+        setQuery(e.target.value);
+    };
 
     useEffect(() => {
         localStorage.setItem('ingredients', JSON.stringify(storedIngredients));
@@ -49,7 +53,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
             <Fridge
                 query={query}
-                setQuery={setQuery}
+                onSearch={onSearch}
                 onAddItem={addStoredIngredient}
                 onRemoveItem={removeStoredIngredient}
                 ingredients={ingredients}

@@ -15,7 +15,7 @@ export const useFridgeStore = create<FridgeState>()(set => ({
     ingredients: [],
     storedIngredients: [],
     setIngredients: items =>
-        set(state => ({ ingredients: [...state.ingredients, ...items] })),
+        set(state => ({ ingredients: items })),
     setStoreIngredient: items => set(state => ({ storedIngredients: items })),
     addStoredIngredient: item =>
         set(state => ({
