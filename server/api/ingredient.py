@@ -21,7 +21,7 @@ router = APIRouter(
 
 
 @router.get(
-    "/",
+    "",
     response_model=List[IngredientBaseInfo],
 )
 def get_ingredients(
