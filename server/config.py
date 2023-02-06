@@ -15,4 +15,5 @@ if not load_dotenv("app/.env"):
 else:
     logger.success("OK 1")
 
+
 SPOONCULAR_KEY = os.getenv("SPOONCULAR_KEY")
