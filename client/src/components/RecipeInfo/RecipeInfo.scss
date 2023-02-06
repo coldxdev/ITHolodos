@@ -56,6 +56,9 @@
     &__list {
         margin-top: 0;
         margin-bottom: em(25);
+        max-height: rem(300);
+        overflow-y: auto;
+        padding-right: rem(5);
     }
 
     &__ingredient {

@@ -67,7 +67,12 @@ const Fridge: React.FC<FridgeProps> = ({
         >
             <div className='Fridge__wrapper container'>
                 <div className='Fridge__top' onClick={onTopClick}>
-                    <h4 className='Fridge__top-title'>Fridge</h4>
+                    <h4 className='Fridge__top-title'>
+                        Fridge
+                        {storedIngredients?.length
+                            ? ` (${storedIngredients.length} items)`
+                            : null}
+                    </h4>
 
                     <button className='Fridge__btn' onClick={onPlusItem}>
                         <PlusIcon />

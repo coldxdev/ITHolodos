@@ -8,11 +8,10 @@ import './Recipes.scss';
 interface RecipesProps {
     recipes: RecipeItemI[];
     next: string | null;
-    previos: string | null;
-    isLoading: boolean;
+    onLoadMore: () => void;
 }
 
-const Recipes: React.FC<RecipesProps> = ({ recipes, next, isLoading }) => {
+const Recipes: React.FC<RecipesProps> = ({ recipes, next, onLoadMore }) => {
     const recipeItems = recipes.map(recipe => (
         <RecipeItem {...recipe} key={recipe.id} />
     ));
@@ -21,13 +20,12 @@ const Recipes: React.FC<RecipesProps> = ({ recipes, next, isLoading }) => {
         <div className='Recipes'>
             <h2 className='Recipes__title'>Recipes</h2>
 
-            <div className='Recipes__items'>
-                {recipeItems}
-                {isLoading && <Loader />}
-            </div>
+            <div className='Recipes__items'>{recipeItems}</div>
 
             {next ? (
-                <Button className='Recipes__btn'>Load more receipts</Button>
+                <Button className='Recipes__btn' onClick={onLoadMore}>
+                    Load more receipts
+                </Button>
             ) : null}
         </div>
     );

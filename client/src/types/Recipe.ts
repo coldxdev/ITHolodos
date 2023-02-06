@@ -1,7 +1,5 @@
 import { IngredientI } from './Ingredient';
 
-export interface RecipeDetailI {}
-
 export interface RecipeInstructionI {
     number: number;
     step: string;
