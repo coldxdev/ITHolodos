@@ -9,14 +9,16 @@ import './RecipeInfo.scss';
 interface RecipeInfoProps extends RecipeDetailI {}
 
 const RecipeInfo: React.FC<RecipeInfoProps> = ({
+    id,
     image,
     extendedIngredients,
     title,
     instruction,
-    id,
 }) => {
-    const ingredientElems = extendedIngredients.map(ingredient => (
-        <li className='RecipeInfo__ingredient' key={ingredient.id}>
+    console.log(extendedIngredients);
+    
+    const ingredientElems = extendedIngredients.map((ingredient, idx) => (
+        <li className='RecipeInfo__ingredient' key={idx}>
             <div className='RecipeInfo__ingredient-wrapper'>
                 <div className='RecipeInfo__ingredient-img'>
                     <img
@@ -59,21 +61,25 @@ const RecipeInfo: React.FC<RecipeInfoProps> = ({
                         <ul className='RecipeInfo__list'>{ingredientElems}</ul>
                     </div>
 
-                    <div className='RecipeInfo__recipe'>
-                        <h5 className='RecipeInfo__recipe-title'>
-                            Full Recipe
-                        </h5>
-                        <ol className='RecipeInfo__recipe-items'>
-                            {instruction.map(item => (
-                                <li
-                                    className='RecipeInfo__recipe-item'
-                                    key={item.number}
-                                >
-                                    {item.step}
-                                </li>
-                            ))}
-                        </ol>
-                    </div>
+                    {instruction?.length ? (
+                        <div className='RecipeInfo__recipe'>
+                            <h5 className='RecipeInfo__recipe-title'>
+                                Full Recipe
+                            </h5>
+                            <ol className='RecipeInfo__recipe-items'>
+                                {instruction?.map(item => (
+                                    <li
+                                        className='RecipeInfo__recipe-item'
+                                        key={item.number}
+                                    >
+                                        {item.step}
+                                    </li>
+                                ))}
+                            </ol>
+                        </div>
+                    ) : <p className='RecipeInfo__error'>
+                             Unfortunately, we don't have full recipe 😢
+                        </p>}
                 </div>
             </div>
         </div>

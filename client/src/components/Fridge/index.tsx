@@ -11,23 +11,28 @@ import { CSSTransition } from 'react-transition-group';
 interface FridgeProps {
     storedIngredients: IngredientI[] | any[];
     ingredients: IngredientI[];
-    onAddItem: (item: IngredientI) => void;
-    onRemoveItem: (ingredientI: number) => void;
     query: string;
+    onAddItem: (item: IngredientI) => void;
     onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onRemoveItem: (ingredientI: number) => void;
+    onSelectCategory: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 const Fridge: React.FC<FridgeProps> = ({
     storedIngredients,
     ingredients,
+    query,
     onRemoveItem,
     onAddItem,
-    query,
     onSearch,
+    onSelectCategory
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isVisibleNewItem, setIsVisibleNewItem] = useState(false);
+    // const height
 
+    // const 
+    
     const { setIngredients } = useFridgeStore();
 
     const onAdd = (ingredient: IngredientI) => {
@@ -67,7 +72,12 @@ const Fridge: React.FC<FridgeProps> = ({
         >
             <div className='Fridge__wrapper container'>
                 <div className='Fridge__top' onClick={onTopClick}>
-                    <h4 className='Fridge__top-title'>Fridge</h4>
+                    <h4 className='Fridge__top-title'>
+                        Fridge
+                        {storedIngredients?.length
+                            ? ` (${storedIngredients.length} items)`
+                            : null}
+                    </h4>
 
                     <button className='Fridge__btn' onClick={onPlusItem}>
                         <PlusIcon />
@@ -75,7 +85,7 @@ const Fridge: React.FC<FridgeProps> = ({
                 </div>
 
                 <div className='Fridge__body'>
-                    <select className='Fridge__select'>
+                    <select className='Fridge__select' onChange={onSelectCategory}>
                         <option value='1'>All products</option>
                         <option value='2'>Fruit</option>
                         <option value='3'>Meat</option>

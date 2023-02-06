@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { fetchIngredientByKeyword } from '../api/FridgeApi';
-//@ts-ignore
+import { INGREDIENTS_KEY } from '../helpers/consts';
 import { debounce } from '../helpers/utils';
 import Fridge from './Fridge';
 import Header from './Header';
@@ -16,19 +16,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         ingredients,
         addStoredIngredient,
         removeStoredIngredient,
-        setStoreIngredient,
+        setStoredIngredient,
         setIngredients,
     } = useFridgeStore();
 
     const [query, setQuery] = useState('');
-
-    useEffect(() => {
-        if (localStorage.getItem('ingredients')?.length) {
-            const stringifiendIngredients = localStorage.getItem('ingredients');
-            // @ts-ignore
-            setStoreIngredient(JSON.parse(stringifiendIngredients));
-        }
-    }, []);
+    
 
     const getIngredientByKeyword = async (query: string) => {
         const ingredients = await fetchIngredientByKeyword(query);
@@ -37,7 +30,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
     const debouncedGetIngredientByKeyword = useCallback(
         debounce(getIngredientByKeyword),
-    []
+        []
     );
 
     const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,8 +40,19 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         setQuery(e.target.value);
     };
 
+
+    const onSelectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        console.log(e.target.value);
+        
+    }
+    
     useEffect(() => {
-        localStorage.setItem('ingredients', JSON.stringify(storedIngredients));
+        if (storedIngredients) {
+            localStorage.setItem(
+                INGREDIENTS_KEY,
+                JSON.stringify(storedIngredients)
+            );
+        }
     }, [storedIngredients]);
 
     return (
@@ -61,6 +65,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 onSearch={onSearch}
                 onAddItem={addStoredIngredient}
                 onRemoveItem={removeStoredIngredient}
+                onSelectCategory={onSelectCategory}
                 ingredients={ingredients}
                 storedIngredients={storedIngredients}
             />

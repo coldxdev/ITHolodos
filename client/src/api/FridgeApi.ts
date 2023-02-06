@@ -14,3 +14,9 @@ export const fetchIngredientByKeyword = async (
         throw new Error(error);
     }
 };
+
+
+
+export const fetchDetailIngredientById = async (id: number): Promise => {
+
+}

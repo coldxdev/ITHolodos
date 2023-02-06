@@ -4,7 +4,7 @@
     padding-bottom: rem(25);
 
     &__title {
-        margin-bottom: rem(15);
+        margin-bottom: rem(10);
     }
 
     &__items {
@@ -12,7 +12,6 @@
         grid-template-columns: repeat(3, 1fr);
         gap: rem(15);
         padding-bottom: rem(15);
-        margin-bottom: rem(25);
         position: relative;
         min-height: rem(230);
 
@@ -23,13 +22,16 @@
         @media (max-width: em(490)) {
             grid-template-columns: 1fr;
         }
+
+        &:not(:last-child) {
+            margin-bottom: rem(15);
+        }
     }
 
-    &__btn{
+    &__btn {
         display: block;
         margin: 0 auto;
         font-size: rem(22);
         padding: rem(12) rem(22);
     }
-    
 }

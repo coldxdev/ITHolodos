@@ -1,15 +1,22 @@
+import { useFridgeStore } from './../components/store/FridgeStore';
+import { recipesPerPage } from './../helpers/consts';
 import { RecipeDetailI } from './../types/Recipe';
 import { RecipeItemI } from '../types/Recipe';
 import { IngredientI } from './../types/Ingredient';
 import axios from './index';
 
-// export const fetchRandomIngredient = () => {
-// 	try{
-// 		const result = axios.get('')
-// 	} catch(e){
-// 		throw new Error(e)
-// 	}
-// }
+export const fetchRandomRecipes = (size: number = recipesPerPage) => {
+    try {
+        const result = axios
+            .get(`/recipes/random?number=${recipesPerPage}`)
+            .then(res => res.data);
+        console.log(result);
+
+        return result;
+    } catch (e) {
+        throw new Error(e);
+    }
+};
 
 export interface RecipeData {
     results: RecipeItemI[];
@@ -23,14 +30,15 @@ export interface RecipeData {
 }
 
 export const fetchRecipesByIngredients = (
-    ingredients: IngredientI[]
+    ingredients: IngredientI[],
+    size: number = recipesPerPage
 ): Promise<RecipeData> => {
     const mappedIngredientsNames = ingredients.map(i => i.name).join(',');
 
     try {
         const result = axios
             .get(
-                `/recipes/available?ingredients=${mappedIngredientsNames}&page=1&size=6`
+                `/recipes/available?ingredients=${mappedIngredientsNames}&page=1&size=${size}`
             )
             .then(res => res.data);
 
@@ -40,18 +48,13 @@ export const fetchRecipesByIngredients = (
     }
 };
 
-export const fetchRecipesDetailById = (
+export const fetchRecipesDetailByIdAPI = async (
     recipe_id: number
 ): Promise<RecipeDetailI> => {
     try {
-        const result = axios
+        const result: Promise<RecipeDetailI> = await axios
             .get(`/recipes/detail/${recipe_id}`)
             .then(res => res.data);
-        // result.extendedIngredients.map(ingredient => {
-        //     console.log(ingredient);
-            
-        //     return ingredient
-        // })
 
         return result;
     } catch (e) {
