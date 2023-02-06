@@ -1,8 +1,7 @@
 # ![vite](https://user-images.githubusercontent.com/45178554/217112665-581734b9-d550-461f-aedd-0110ca4fb969.svg) ITHolodos | CactusTeam🌵
 
+![demo](https://user-images.githubusercontent.com/45178554/217113195-cc09498d-7730-4706-a50f-322ad1cd06af.gif)
 
-
-https://user-images.githubusercontent.com/45178554/217113020-1a9555c6-308f-4220-99e0-fb40d52b8417.mp4
 
 ## Run Application
 `git clone https://github.com/ivan-masiuk/ITHolodos_app`
