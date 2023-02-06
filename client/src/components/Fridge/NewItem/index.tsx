@@ -30,7 +30,6 @@ const NewItem: React.FC<NewItemProps> = ({
         }
     }, []);
 
-    //TODO: Create component newItemElem
     const newItemElems = resultsList?.map(ingredient => {
         return (
             <li className='NewItem__item' key={ingredient.id}>

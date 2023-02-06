@@ -77,7 +77,9 @@ const RecipeInfo: React.FC<RecipeInfoProps> = ({
                                 ))}
                             </ol>
                         </div>
-                    ) : null}
+                    ) : <p className='RecipeInfo__error'>
+                             Unfortunately, we don't have full recipe 😢
+                        </p>}
                 </div>
             </div>
         </div>

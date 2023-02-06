@@ -19,20 +19,19 @@ const Home: React.FC = () => {
 
     const getRecipes = async (newSize: number = size) => {
         setIsLoading(true);
-        let recipes: RecipeItemI[];
+        let recipesData: RecipeData;
 
         if (storedIngredients.length) {
-            const recipesData = await fetchRecipesByIngredients(
+            recipesData = await fetchRecipesByIngredients(
                 storedIngredients,
                 newSize
             );
-            recipes = recipesData.results;
-            setRecipesData(recipesData);
         } else {
-            recipes = await fetchRandomRecipes();
+            recipesData = await fetchRandomRecipes();
         }
 
-        setRecipes(recipes);
+        setRecipesData(recipesData);
+        setRecipes(recipesData.results);
         setIsLoading(false);
     };
 

@@ -154,4 +154,10 @@
             margin-bottom: em(15);
         }
     }
+
+    &__error{
+        font-size: rem(18);
+        color: var(--red);
+        font-weight: 600;
+    }
 }

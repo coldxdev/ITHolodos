@@ -21,6 +21,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     } = useFridgeStore();
 
     const [query, setQuery] = useState('');
+    
 
     const getIngredientByKeyword = async (query: string) => {
         const ingredients = await fetchIngredientByKeyword(query);
@@ -38,6 +39,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         }
         setQuery(e.target.value);
     };
+
+
+    const onSelectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        console.log(e.target.value);
+        
+    }
     
     useEffect(() => {
         if (storedIngredients) {
@@ -58,6 +65,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 onSearch={onSearch}
                 onAddItem={addStoredIngredient}
                 onRemoveItem={removeStoredIngredient}
+                onSelectCategory={onSelectCategory}
                 ingredients={ingredients}
                 storedIngredients={storedIngredients}
             />
