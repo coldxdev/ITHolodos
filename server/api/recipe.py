@@ -101,49 +101,65 @@ def get_available_recipes(
 
 @router.get(
     "/random",
+    response_model=Page[dict],
 )
 def get_recipes_random(
-        number: int
+        number: int,
+        request: Request,
 ):
     """
-    Returns certain amount of random recipes
+    Returns paginated certain amount of random recipes
     for example:
     `
 
-        [
-            {
-                "id": 716276,
-                "title": "Doughnuts",
-                "image": "https://spoonacular.com/recipeImages/716276-556x370.jpg",
-                "extendedIngredients": [
+        {
+            "results":
+                [
                     {
-                        "id": 20081,
-                        "amount": 1.5,
-                        "unit": "cups",
-                        "name": "flour",
-                        "image": "https://spoonacular.com/cdn/ingredients_100x100/flour.png"
-                    }]
-            },
-            {
-                "id": 633765,
-                "title": "Baked Rigatoni With Sausage",
-                "image": "https://spoonacular.com/recipeImages/716276-556x370.jpg",
-                "extendedIngredients": [
+                        "id": 716276,
+                        "title": "Doughnuts",
+                        "image": "https://spoonacular.com/recipeImages/716276-556x370.jpg",
+                        "extendedIngredients": [
+                            {
+                                "id": 20081,
+                                "amount": 1.5,
+                                "unit": "cups",
+                                "name": "flour",
+                                "image": "https://spoonacular.com/cdn/ingredients_100x100/flour.png"
+                            }]
+                    },
                     {
-                        "id": 20081,
-                        "amount": 1.5,
-                        "unit": "cups",
-                        "name": "flour",
-                        "image": "https://spoonacular.com/cdn/ingredients_100x100/flour.png"
-                    }]
-            }
-        ]
+                        "id": 633765,
+                        "title": "Baked Rigatoni With Sausage",
+                        "image": "https://spoonacular.com/recipeImages/716276-556x370.jpg",
+                        "extendedIngredients": [
+                            {
+                                "id": 20081,
+                                "amount": 1.5,
+                                "unit": "cups",
+                                "name": "flour",
+                                "image": "https://spoonacular.com/cdn/ingredients_100x100/flour.png"
+                            }]
+                    }
+                ],
+            "total": 40,
+            "page": 4,
+            "size": 2,
+            "next": "/recipes/random?number=40&page=5&size=2",
+            "previous": "/recipes/random?number=40&page=3&size=2",
+            "first": "/recipes/random?number=40&page=1&size=2",
+            "last": "/recipes/random?number=40&page=20&size=2"
+        }
     `
     \f
+    :param request:
     :param number: Number of random recipes
     :return: Json list of random recipes
     """
-    return random_recipes(number)
+    return paginate(
+        random_recipes(number),
+        additional_data={'request': request},
+    )
 
 
 @router.get("/detail/{recipe_id}")
