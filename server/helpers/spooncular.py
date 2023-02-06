@@ -278,9 +278,9 @@ def filter_recipe_ingredient_keys(ingredients: List) -> List:
     filtered_ingredients = []
     for ingredient in ingredients:
         filtered_ingredient = filter_keys(keys_for_filtering, ingredient)
-
-        if (not is_url(filtered_ingredient["image"])
-                and filtered_ingredient["image"] is not None):
+        conditions = [not is_url(filtered_ingredient["image"]),
+                      filtered_ingredient["image"] is not None]
+        if all(conditions):
             filtered_ingredient["image"] = update_img_link(
                 filtered_ingredient.get("image"),
                 "https://spoonacular.com/cdn/ingredients_100x100/{img_name}"
