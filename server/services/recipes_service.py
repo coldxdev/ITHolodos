@@ -57,7 +57,7 @@ def get_all_available_recipes(ingredients: str) -> List:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
 
 
-def get_recipe_instruction(recipe_id: int) -> List:
+def get_recipe_instruction(recipe_id: int) -> Optional[List]:
     """
     Returns parsed instruction for certain recipe
     by id
