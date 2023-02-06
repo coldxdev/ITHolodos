@@ -1,6 +1,6 @@
 """Spooncular API services"""
 
-from typing import Optional, List
+from typing import Optional, List, Union
 from urllib.parse import urlparse
 
 import requests
@@ -169,7 +169,7 @@ def request_random_recipes(number: int) -> Json:
         logger.warning(ex)
 
 
-def check_404_message_json(obj: Json) -> bool:
+def check_404_message_json(obj: Union[Json, List]) -> bool:
     """
     Checks if a JSON is a valid Message404JsonSchema
     :param obj: Json which we want to check
@@ -202,7 +202,15 @@ def filter_keys(keys: List[str], target: Json) -> dict:
     :param target:
     :return:
     """
-    return {key: target[key] for key in keys}
+    result = {}
+    for key in keys:
+        try:
+            result[key] = target[key]
+        except Exception as ex:
+            result[key] = None
+            logger.debug(ex)
+
+    return result
 
 
 def is_url(url: str) -> bool:
@@ -269,11 +277,14 @@ def filter_recipe_ingredient_keys(ingredients: List) -> List:
                           "name", "image"]
     filtered_ingredients = []
     for ingredient in ingredients:
-        if not is_url(ingredient["image"]):
-            ingredient["image"] = update_img_link(
-                ingredient.get("image"),
+        filtered_ingredient = filter_keys(keys_for_filtering, ingredient)
+
+        if (not is_url(filtered_ingredient["image"])
+                and filtered_ingredient["image"] is not None):
+            filtered_ingredient["image"] = update_img_link(
+                filtered_ingredient.get("image"),
                 "https://spoonacular.com/cdn/ingredients_100x100/{img_name}"
             )
-        filtered_ingredients.append(filter_keys(keys_for_filtering, ingredient))
+        filtered_ingredients.append(filtered_ingredient)
 
     return filtered_ingredients

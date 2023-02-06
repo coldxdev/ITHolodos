@@ -104,8 +104,8 @@ def get_available_recipes(
     response_model=Page[dict],
 )
 def get_recipes_random(
-        number: int,
-        request: Request,
+    request: Request,
+    number: int = 50,
 ):
     """
     Returns paginated certain amount of random recipes
