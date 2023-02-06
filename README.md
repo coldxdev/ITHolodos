@@ -1,6 +1,5 @@
-# ITHolodos | CactusTeam🌵
+# ![vite](https://user-images.githubusercontent.com/45178554/217112665-581734b9-d550-461f-aedd-0110ca4fb969.svg) ITHolodos | CactusTeam🌵
 
-![vite](https://user-images.githubusercontent.com/45178554/217112665-581734b9-d550-461f-aedd-0110ca4fb969.svg)
 
 ![demo](https://user-images.githubusercontent.com/45178554/217112593-e09f7e55-3a66-4cb9-a37e-13cce78b8109.gif)
 
