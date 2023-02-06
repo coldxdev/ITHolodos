@@ -1,1 +1,0 @@
-SPOONCULAR_KEY = ""
