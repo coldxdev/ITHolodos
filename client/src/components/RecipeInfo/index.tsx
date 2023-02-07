@@ -2,9 +2,11 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowIcon, CrossIcon, TickIcon } from '../../assets/images/icons';
+import { formatAmount } from '../../helpers/utils';
 import { AppRoutes } from '../../router';
 import { RecipeDetailI } from '../../types/Recipe';
 import './RecipeInfo.scss';
+import cover from '../../assets/images/cover.jpg';
 
 interface RecipeInfoProps extends RecipeDetailI {}
 
@@ -15,8 +17,6 @@ const RecipeInfo: React.FC<RecipeInfoProps> = ({
     title,
     instruction,
 }) => {
-    console.log(extendedIngredients);
-    
     const ingredientElems = extendedIngredients.map((ingredient, idx) => (
         <li className='RecipeInfo__ingredient' key={idx}>
             <div className='RecipeInfo__ingredient-wrapper'>
@@ -28,7 +28,8 @@ const RecipeInfo: React.FC<RecipeInfoProps> = ({
                 </div>
 
                 <p className='RecipeInfo__ingredient-text'>
-                    {ingredient.name} {ingredient.amount} {ingredient.unit}
+                    {ingredient.name} {formatAmount(ingredient.amount || 0)}{' '}
+                    {ingredient.unit}
                 </p>
             </div>
 
@@ -49,7 +50,10 @@ const RecipeInfo: React.FC<RecipeInfoProps> = ({
             </Link>
             <div className='RecipeInfo__body'>
                 <div className='RecipeInfo__img'>
-                    <img src={image} alt={`Photo recipe ${image}`} />
+                    <img
+                        src={image ? image : cover}
+                        alt={`Photo recipe ${title}`}
+                    />
                 </div>
 
                 <div className='RecipeInfo__content'>
@@ -77,9 +81,11 @@ const RecipeInfo: React.FC<RecipeInfoProps> = ({
                                 ))}
                             </ol>
                         </div>
-                    ) : <p className='RecipeInfo__error'>
-                             Unfortunately, we don't have full recipe 😢
-                        </p>}
+                    ) : (
+                        <p className='RecipeInfo__error'>
+                            Unfortunately, we don't have full recipe 😢
+                        </p>
+                    )}
                 </div>
             </div>
         </div>

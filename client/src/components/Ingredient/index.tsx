@@ -3,6 +3,7 @@ import { IngredientI } from '../../types/Ingredient';
 import './Ingredient.scss';
 import classnames from 'classnames';
 import { CrossIcon } from '../../assets/images/icons';
+import cover from '../../assets/images/cover.jpg';
 
 interface IngredientProps extends IngredientI {
     className?: string;
@@ -16,11 +17,10 @@ const Ingredient: React.FC<IngredientProps> = ({
     className,
     onRemoveIngredient,
 }) => {
-
     const onRemove = () => {
-        onRemoveIngredient(id)
-    }
-    
+        onRemoveIngredient(id);
+    };
+
     return (
         <div className={classnames('Ingredient', className)}>
             <button className='Ingredient__remove' onClick={onRemove}>
@@ -28,7 +28,7 @@ const Ingredient: React.FC<IngredientProps> = ({
             </button>
 
             <div className='Ingredient__img'>
-                <img src={image} alt={`Photo ${name}`} />
+                <img src={image ? image : cover} alt={`Photo ${name}`} />
             </div>
 
             <p className='Ingredient__name'>{name}</p>

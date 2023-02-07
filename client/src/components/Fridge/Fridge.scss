@@ -15,6 +15,10 @@
     &.opened {
         top: calc(var(--header-height) + 15px);
     }
+
+    &.opened .Fridge__wrapper{
+        overflow-y: auto;
+    }
 }
 
 .Fridge__wrapper {
@@ -22,7 +26,10 @@
     padding-bottom: rem(20);
     border-radius: rem(35);
     height: 100%;
-    // overflow-y: auto;
+
+    @media (max-width: em(500)) {
+        border-radius: rem(15);
+    }
 }
 
 .Fridge__top {
@@ -57,7 +64,7 @@
 }
 
 .Fridge__body {
-    padding: 0 rem(15);
+    padding: 0 rem(15) rem(35);
 }
 
 .Fridge__select {
@@ -71,6 +78,7 @@
     border: 1px solid #fff;
     border-radius: rem(5);
     outline: 0;
+    text-transform: capitalize;
 
     &:focus {
     }
@@ -78,6 +86,7 @@
     & option {
         background-color: #fff;
         color: var(--black);
+        text-transform: capitalize;
     }
 
     &:not(:last-child) {
@@ -89,15 +98,10 @@
     display: grid;
     padding-right: rem(15);
     padding-bottom: rem(50);
-    grid-template-columns: repeat(5, 1fr);
-    gap: rem(30);
+    grid-template-columns: repeat(4, 1fr);
+    gap: rem(20);
     max-height: 100%;
     overflow-y: auto;
-
-    @media (max-width: em(850)) {
-        grid-template-columns: repeat(4, 1fr);
-        gap: rem(20);
-    }
 
     @media (max-width: em(650)) {
         grid-template-columns: repeat(3, 1fr);
@@ -108,6 +112,11 @@
         grid-template-columns: repeat(2, 1fr);
         gap: rem(15);
     }
+}
+
+
+.Fridge__list-wrapper{
+    height: 100%;
 }
 
 .Fridge__no-items {

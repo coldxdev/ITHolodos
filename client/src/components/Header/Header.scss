@@ -5,6 +5,8 @@
 	background-color: var(--black);
 	padding: rem(15) 0;
 	margin-bottom: rem(20);
+	position: relative;
+	z-index: 2;
 }
 
 .Header__wrapper{

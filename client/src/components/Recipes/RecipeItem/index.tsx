@@ -4,7 +4,7 @@ import { RecipeItemI } from '../../../types/Recipe';
 import './RecipeItem.scss';
 import { AppRoutes } from '../../../router';
 import classNames from 'classnames';
-import cover from '../../../assets/images/cover.svg';
+import cover from '../../../assets/images/cover.jpg';
 
 interface RecipeItemProps extends RecipeItemI {}
 

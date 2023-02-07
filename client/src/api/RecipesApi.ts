@@ -10,10 +10,9 @@ export const fetchRandomRecipes = (size: number = recipesPerPage) => {
         const result = axios
             .get(`/recipes/random?number=${recipesPerPage}`)
             .then(res => res.data);
-        console.log(result);
 
         return result;
-    } catch (e) {
+    } catch (e: ReturnType<Error>) {
         throw new Error(e);
     }
 };
@@ -43,21 +42,44 @@ export const fetchRecipesByIngredients = (
             .then(res => res.data);
 
         return result;
-    } catch (e) {
+    } catch (e: ReturnType<Error>) {
         throw new Error(e);
     }
 };
 
 export const fetchRecipesDetailByIdAPI = async (
-    recipe_id: number
+    recipe_id: number,
+    storedIngredients: IngredientI[]
 ): Promise<RecipeDetailI> => {
+    const isRecipeStore = (itemName: string): boolean => {
+        return Boolean(
+            storedIngredients.find(storedItem =>
+                itemName.toLowerCase().includes(storedItem.name)
+            )
+        );
+    };
+
     try {
-        const result: Promise<RecipeDetailI> = await axios
+        const result: RecipeDetailI = await axios
             .get(`/recipes/detail/${recipe_id}`)
-            .then(res => res.data);
+            .then(res => res.data)
+            .then((recipeDetail: RecipeDetailI) => {
+                const filteredExtendedIngredients =
+                    recipeDetail.extendedIngredients.map(
+                        (item: IngredientI) => ({
+                            ...item,
+                            stored: isRecipeStore(item.name),
+                        })
+                    );
+
+                return {
+                    ...recipeDetail,
+                    extendedIngredients: filteredExtendedIngredients,
+                };
+            });
 
         return result;
-    } catch (e) {
+    } catch (e: ReturnType<Error>) {
         throw new Error(e);
     }
 };

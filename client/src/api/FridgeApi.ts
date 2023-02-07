@@ -1,3 +1,4 @@
+import { IngredientDetailI } from './../types/Ingredient';
 import { IngredientI } from '../types/Ingredient';
 import axios from './index';
 
@@ -10,13 +11,21 @@ export const fetchIngredientByKeyword = async (
             .then(res => res.data);
 
         return result;
-    } catch (error: any) {
+    } catch (error: ReturnType<Error>) {
         throw new Error(error);
     }
 };
 
+export const fetchDetailIngredientById = async (
+    id: number
+): Promise<IngredientDetailI> => {
+    try {
+        const result = await axios
+            .get(`/ingredients/${id}`)
+            .then(res => res.data);
 
-
-export const fetchDetailIngredientById = async (id: number): Promise => {
-
-}
+        return result;
+    } catch (error: ReturnType<Error>) {
+        throw new Error(error);
+    }
+};

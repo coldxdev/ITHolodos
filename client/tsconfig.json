@@ -14,9 +14,10 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "types": ["vite/client"]
     },
-    "include": ["src", "src/components/Fridge/NewItem/index.tsx"],
+    "include": ["src"],
     "files": ["globals.d.ts"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -30,6 +30,7 @@ body {
 
 .wrapper {
     padding-bottom: var(--fridge-top-height);
+    
 }
 
 .container {
@@ -37,4 +38,6 @@ body {
     margin: 0 auto;
     padding-left: rem(15);
     padding-right: rem(15);
+    position: relative;
+    height: 100%;
 }
