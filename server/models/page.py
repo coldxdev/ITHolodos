@@ -16,7 +16,7 @@ class Page(AbstractPage[T], Generic[T]):
     Response model for paginated json list
     """
     results: Sequence[T]
-    total: conint(ge=1)
+    total: conint(ge=0)
     page: conint(ge=1)
     size: conint(ge=1)
     next: Optional[str] = None
