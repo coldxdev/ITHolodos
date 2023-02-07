@@ -11,7 +11,7 @@
 
 **[Link to the API docs](http://138.197.186.66:8001/docs/ "Link to the API docs")**
 
-**[Link to the design in Figma]( "Link to the design in Figma")**
+**[Link to the design in Figma](https://www.figma.com/file/m0XTcyfEfw6kj1qi2mbLCt/IT-Holodos-Design?node-id=42%3A5975&t=Oy7NVWEPj9xr9RZv-1 "Link to the design in Figma")**
 
 **[Link to the GitHub repo](https://github.com/ivan-masiuk/ITHolodos_app/ "Link to the GitHub repo")**
 
