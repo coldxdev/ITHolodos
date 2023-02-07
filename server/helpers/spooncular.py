@@ -29,7 +29,6 @@ def checks_exceptions(func):
 
         try:
             response = func(*args, **kwargs)
-            print(response.status_code)
 
             if response.status_code == 402:
                 api_key = get_api_key()
@@ -82,7 +81,6 @@ def request_ingredient_info_by_id_api(pk: int) -> Optional[Json]:
     :param pk: id of ingredient
     :return: Json or None if Json is not valid
     """
-
     response = requests.get(
             "https://api.spoonacular.com/food/"
             f"ingredients/{pk}/information"
@@ -100,7 +98,6 @@ def request_ingredient_by_name_api(name: str) -> Json:
     :param name: Name(part of the name) ingredient
     :return: Json
     """
-
     response = requests.get(
             "https://api.spoonacular.com/food/"
             f"ingredients/search?query={name}"
@@ -118,7 +115,6 @@ def request_recipe_info_by_id(recipe_id: int) -> Optional[Json]:
     :param recipe_id: int id of recipe
     :return: Json or None if recipe doesn't exist
     """
-
     response = requests.get(
             "https://api.spoonacular.com/recipes"
             f"/{recipe_id}/information"
@@ -137,7 +133,6 @@ def request_recipe_instruction_by_id(recipe_id: int) -> Optional[Json]:
     :param recipe_id: int id of recipe
     :return: Json
     """
-
     response = requests.get(
             "https://api.spoonacular.com/recipes"
             f"/{recipe_id}/analyzedInstructions"
@@ -156,7 +151,6 @@ def request_available_recipes_by_ingredients(ingredients: str) -> Json:
                         example: "boysenberries,honey,white wine vinegar"
     :return: Json
     """
-
     response = requests.get(
             "https://api.spoonacular.com/"
             "recipes/findByIngredients"
@@ -176,7 +170,6 @@ def request_random_recipes(number: int) -> Json:
     :param number: number of recipes
     :return: Json
     """
-
     response = requests.get(
             "https://api.spoonacular.com/"
             "recipes/random"
