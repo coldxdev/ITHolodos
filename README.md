@@ -8,9 +8,12 @@
 ### Links to test production
 
 **[Link to the site](http://138.197.186.66/ "Link to the site")**
+
 **[Link to the API docs](http://138.197.186.66:8001/docs/ "Link to the API docs")**
+
 **[Link to the design in Figma]( "Link to the design in Figma")**
-**[Link to the GitHub repo]( https://github.com/ivan-masiuk/ITHolodos_app/ "Link to the GitHub repo")**
+
+**[Link to the GitHub repo](https://github.com/ivan-masiuk/ITHolodos_app/ "Link to the GitHub repo")**
 
 
 ---
