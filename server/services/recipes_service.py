@@ -82,9 +82,12 @@ def get_recipes_random(number: int) -> List:
     keys_for_filtering = ["id", "title", "image",
                           "extendedIngredients"]
     if response_json := request_random_recipes(number):
-        for recipe in response_json:
+
+        for recipe in response_json.get("recipes"):
             filtered_recipe = filter_keys(keys_for_filtering, recipe)
-            filtered_recipe["extendedIngredients"] = filter_recipe_ingredient_keys(recipe["extendedIngredients"])
+            filtered_recipe["extendedIngredients"] = filter_recipe_ingredient_keys(
+                filtered_recipe["extendedIngredients"],
+            )
             recipes.append(filtered_recipe)
 
     return recipes
