@@ -36,6 +36,9 @@
 
 `git clone https://github.com/ivan-masiuk/ITHolodos_app`
 
+update/create client/.env
+update/create server/.env 
+
 `docker-compose build`
 
 `docker-compose up -d`
