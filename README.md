@@ -1,4 +1,7 @@
-#🌵ITHolodos | CactusTeam🌵
+# 🌵ITHolodos | CactusTeam🌵
+
+![demo_holodos](https://user-images.githubusercontent.com/45178554/217117112-9e086bff-8024-4751-8d07-6aec46a812ac.gif)
+
 
 ---
 
@@ -7,6 +10,8 @@
 **[Link to the site](http://138.197.186.66/ "Link to the site")**
 **[Link to the API docs](http://138.197.186.66:8001/docs/ "Link to the API docs")**
 **[Link to the design in Figma]( "Link to the design in Figma")**
+**[Link to the GitHub repo]( https://github.com/ivan-masiuk/ITHolodos_app/ "Link to the GitHub repo")**
+
 
 ---
 
@@ -18,6 +23,9 @@
 4. View culinary receipts by ingredients;
 5. View details receipt by steps;
 6. View list and amount of ingredients for each receipt;
+7. Friendly UI;
+8. Adaptability to different devices;
+9. Documentation;
 
 ---
 
@@ -31,7 +39,7 @@
 
 ---
 
-### Used technologies
+### Used technologies 
 
 **Server part (Backend):** ![Python](https://img.shields.io/badge/python-0174DF?style=for-the-badge&logo=python&logoColor=ffdd54) ![FastAPI](https://img.shields.io/badge/FastAPI-088A85?style=for-the-badge&logo=fastapi&logoColor=white)
 
