@@ -1,6 +1,7 @@
 """Config of the server part"""
 import os
 from itertools import count
+from typing import Iterable, Optional, Iterator
 
 from dotenv import load_dotenv
 from loguru import logger
@@ -20,7 +21,12 @@ else:
 SPOONCULAR_KEY = os.getenv("SPOONCULAR_KEY")
 
 
-def generate_api_keys():
+def generate_api_keys() -> Iterator[str]:
+    """
+    Parses all SPOONCULAR_KEY_NUMBER in iterator
+    and returns it
+    :return: Iterator[str]
+    """
     api_keys = []
     while True:
         for i in count(1):
@@ -31,7 +37,11 @@ def generate_api_keys():
                 return iter(api_keys)
 
 
-def get_api_key():
+def get_api_key() -> Optional[str]:
+    """
+    Returns valid api key if some expired
+    :return: str api key
+    """
     keys = generate_api_keys()
     while True:
         try:

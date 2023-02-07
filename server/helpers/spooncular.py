@@ -17,6 +17,13 @@ from ..models.spoonacular_api import Message404JsonSchema
 
 
 def checks_exceptions(func):
+    """
+    Decorates function for exception checking
+    especially status code 402, if it occurs
+    we get another api key
+    :param func:
+    :return: funct
+    """
     @wraps(func)
     def wrapper_func(*args, **kwargs):
 
