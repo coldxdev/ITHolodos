@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     fetchRandomRecipes,
     fetchRecipesByIngredients,
@@ -8,8 +8,6 @@ import Loader from '../components/Loader';
 import MainLayout from '../components/MainLayout';
 import Recipes from '../components/Recipes';
 import { useFridgeStore, useRecipesStore } from '../components/store';
-import { RecipeItemI } from '../types/Recipe';
-import { recipesPerPage } from '../helpers/consts';
 
 const Home: React.FC = () => {
     const { storedIngredients } = useFridgeStore();
@@ -21,7 +19,7 @@ const Home: React.FC = () => {
         setIsLoading(true);
         let recipesData: RecipeData;
 
-        if (storedIngredients.length) {
+        if (storedIngredients.length > 0) {
             recipesData = await fetchRecipesByIngredients(
                 storedIngredients,
                 newSize
@@ -37,8 +35,7 @@ const Home: React.FC = () => {
 
     const onLoadMore = () => {
         const newSize = size + 6;
-        console.log(newSize);
-        setSize(newSize);
+        setSize(size + 6);
         getRecipes(newSize);
     };
 
@@ -48,15 +45,13 @@ const Home: React.FC = () => {
 
     return (
         <MainLayout>
-            {!isLoading ? (
-                <Recipes
-                    recipes={recipes}
-                    next={recipesData?.next || null}
-                    onLoadMore={onLoadMore}
-                />
-            ) : (
-                <Loader />
-            )}
+            <Recipes
+                recipes={recipes}
+                next={recipesData?.next || null}
+                onLoadMore={onLoadMore}
+            />
+
+            {isLoading ? <Loader /> : null}
         </MainLayout>
     );
 };

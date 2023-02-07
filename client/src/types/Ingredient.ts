@@ -4,5 +4,10 @@ export interface IngredientI {
     image: string;
     amount?: number;
     unit?: string;
-    stored?: boolean | undefined;
+    stored?: boolean | null;
+}
+
+export interface IngredientDetailI extends IngredientI {
+    categoryPath?: string[];
+    possibleUnits?: string[];
 }

@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import './Fridge.scss';
-import { IngredientI } from '../../types/Ingredient';
+import { IngredientDetailI, IngredientI } from '../../types/Ingredient';
 import Ingredient from '../Ingredient';
 import classnames from 'classnames';
 import { PlusIcon } from '../../assets/images/icons';
 import NewItem from './NewItem';
-import { useFridgeStore } from '../store';
-import { CSSTransition } from 'react-transition-group';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 interface FridgeProps {
+    categories: string[];
+    activeCategory: string;
     storedIngredients: IngredientI[] | any[];
-    ingredients: IngredientI[];
+    ingredients: IngredientDetailI[];
     query: string;
     onAddItem: (item: IngredientI) => void;
     onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -21,19 +22,16 @@ interface FridgeProps {
 const Fridge: React.FC<FridgeProps> = ({
     storedIngredients,
     ingredients,
+    categories,
+    activeCategory,
     query,
     onRemoveItem,
     onAddItem,
     onSearch,
-    onSelectCategory
+    onSelectCategory,
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isVisibleNewItem, setIsVisibleNewItem] = useState(false);
-    // const height
-
-    // const 
-    
-    const { setIngredients } = useFridgeStore();
 
     const onAdd = (ingredient: IngredientI) => {
         if (storedIngredients?.find(i => i.id === ingredient.id)) return;
@@ -56,12 +54,16 @@ const Fridge: React.FC<FridgeProps> = ({
         setIsVisibleNewItem(prevState => !prevState);
     };
 
-    const ingredientsElems = storedIngredients?.map(ingredient => (
-        <Ingredient
-            onRemoveIngredient={onRemoveItem}
-            key={ingredient.id}
-            {...ingredient}
-        />
+    const filteredIngredients = activeCategory
+        ? storedIngredients.filter(ingredient =>
+              ingredient.categoryPath.includes(activeCategory)
+          )
+        : storedIngredients;
+
+    const ingredientsElems = filteredIngredients?.map(ingredient => (
+        <CSSTransition timeout={250} key={ingredient.id}>
+            <Ingredient onRemoveIngredient={onRemoveItem} {...ingredient} />
+        </CSSTransition>
     ));
 
     return (
@@ -85,29 +87,32 @@ const Fridge: React.FC<FridgeProps> = ({
                 </div>
 
                 <div className='Fridge__body'>
-                    <select className='Fridge__select' onChange={onSelectCategory}>
-                        <option value='1'>All products</option>
-                        <option value='2'>Fruit</option>
-                        <option value='3'>Meat</option>
-                        <option value='4'>Fish</option>
+                    <select
+                        className='Fridge__select'
+                        onChange={onSelectCategory}
+                    >
+                        <option value=''>All products</option>
+                        {categories.map(category => (
+                            <option key={category} value={category}>
+                                {category}
+                            </option>
+                        ))}
                     </select>
 
-                    {storedIngredients?.length ? (
-                        //TODO: Add transition
-                        <div className='Fridge__list'>{ingredientsElems}</div>
-                    ) : (
-                        <p className='Fridge__no-items'>
-                            You can add products by clicking on the plus. 👆
-                        </p>
-                    )}
+                    <div className='Fridge__list-wrapper'>
+                        {storedIngredients?.length > 0 ? (
+                            <TransitionGroup className='Fridge__list'>
+                                {ingredientsElems}
+                            </TransitionGroup>
+                        ) : (
+                            <p className='Fridge__no-items'>
+                                You can add products by clicking on the plus. 👆
+                            </p>
+                        )}
+                    </div>
                 </div>
             </div>
-            <CSSTransition
-                timeout={350}
-                // classNames={'transition'}
-                unmountOnExit
-                in={isVisibleNewItem}
-            >
+            <CSSTransition timeout={350} unmountOnExit in={isVisibleNewItem}>
                 <NewItem
                     isVisible={isVisibleNewItem}
                     onChange={onSearch}

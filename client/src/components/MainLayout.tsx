@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { fetchIngredientByKeyword } from '../api/FridgeApi';
+import {
+    fetchDetailIngredientById,
+    fetchIngredientByKeyword,
+} from '../api/FridgeApi';
 import { INGREDIENTS_KEY } from '../helpers/consts';
 import { debounce } from '../helpers/utils';
+import { IngredientDetailI } from '../types/Ingredient';
 import Fridge from './Fridge';
 import Header from './Header';
 import { useFridgeStore } from './store';
@@ -14,14 +18,16 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     const {
         storedIngredients,
         ingredients,
+        categories,
+        addCategory,
+        removeCategory,
         addStoredIngredient,
         removeStoredIngredient,
-        setStoredIngredient,
         setIngredients,
     } = useFridgeStore();
 
     const [query, setQuery] = useState('');
-    
+    const [activeCategory, setActiveCategory] = useState('');
 
     const getIngredientByKeyword = async (query: string) => {
         const ingredients = await fetchIngredientByKeyword(query);
@@ -40,12 +46,37 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         setQuery(e.target.value);
     };
 
+    const onAddItem = async (item: IngredientDetailI) => {
+        const detailedIngredient = await fetchDetailIngredientById(item.id);
+
+        detailedIngredient.categoryPath?.forEach(category => {
+            addCategory(category);
+        });
+
+        addStoredIngredient(detailedIngredient);
+    };
+
+    const onRemoveItem = async (ingredientID: number) => {
+        const currentIngredient = storedIngredients.find(
+            item => item.id === ingredientID
+        );
+
+        currentIngredient?.categoryPath?.forEach(category => {
+            removeCategory(category);
+        });
+
+        setActiveCategory('');
+        removeStoredIngredient(ingredientID);
+    };
 
     const onSelectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log(e.target.value);
-        
-    }
-    
+        setActiveCategory(e.target.value);
+    };
+
+    const uniqueCategories = categories.filter(
+        (category, idx) => categories.indexOf(category) === idx
+    );
+
     useEffect(() => {
         if (storedIngredients) {
             localStorage.setItem(
@@ -61,10 +92,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             <div className='container'>{children}</div>
 
             <Fridge
+                categories={uniqueCategories}
+                activeCategory={activeCategory}
                 query={query}
                 onSearch={onSearch}
-                onAddItem={addStoredIngredient}
-                onRemoveItem={removeStoredIngredient}
+                onAddItem={onAddItem}
+                onRemoveItem={onRemoveItem}
                 onSelectCategory={onSelectCategory}
                 ingredients={ingredients}
                 storedIngredients={storedIngredients}

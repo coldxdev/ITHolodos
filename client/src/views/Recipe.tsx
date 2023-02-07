@@ -7,15 +7,6 @@ import RecipeInfo from '../components/RecipeInfo';
 import { useFridgeStore, useRecipeDetailStore } from '../components/store';
 import { IngredientI } from '../types/Ingredient';
 
-// newResult.extendedIngredients = result.extendedIngredients.map(
-//     (item: IngredientI) => ({
-//         ...item,
-//         stored: storedIngredients.find(storedItem =>
-//             item.name.toLowerCase().includes(storedItem.name)
-//         ),
-//     })
-// );
-
 const Recipe: React.FC = () => {
     const { id } = useParams();
 
@@ -25,7 +16,7 @@ const Recipe: React.FC = () => {
 
     const getRecipesDetailById = async (id: number) => {
         setIsLoading(true);
-        const result = await fetchRecipesDetailByIdAPI(id);
+        const result = await fetchRecipesDetailByIdAPI(id, storedIngredients);
         setRecipeDetail(result);
         setIsLoading(false);
     };

@@ -1,10 +1,10 @@
 .Loader {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--black);
+    background-color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,7 +21,7 @@
     animation: bblFadInOut 1.8s infinite ease-in-out;
 }
 .Loader__body {
-    color: #fff;
+    color: var(--black);
     font-size: 7px;
     position: relative;
     text-indent: -9999em;
