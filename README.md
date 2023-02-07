@@ -1,14 +1,38 @@
-# ![vite](https://user-images.githubusercontent.com/45178554/217112665-581734b9-d550-461f-aedd-0110ca4fb969.svg) ITHolodos | CactusTeam🌵
+#🌵ITHolodos | CactusTeam🌵
 
-![demo](https://user-images.githubusercontent.com/45178554/217113195-cc09498d-7730-4706-a50f-322ad1cd06af.gif)
+---
 
+### Links to test production
 
-## Run Application
+**[Link to the site](http://138.197.186.66/ "Link to the site")**
+**[Link to the API docs](http://138.197.186.66:8001/docs/ "Link to the API docs")**
+**[Link to the design in Figma]( "Link to the design in Figma")**
+
+---
+
+### Realized functionality:
+
+1. Add ingredients to the fridge;
+2. Remove ingredients from the fridge;
+3. Sort ingredients in the fridge;
+4. View culinary receipts by ingredients;
+5. View details receipt by steps;
+6. View list and amount of ingredients for each receipt;
+
+---
+
+### Run Application
+
 `git clone https://github.com/ivan-masiuk/ITHolodos_app`
+
 `docker-compose build`
+
 `docker-compose up -d`
 
-## Used technologies
+---
+
+### Used technologies
+
 **Server part (Backend):** ![Python](https://img.shields.io/badge/python-0174DF?style=for-the-badge&logo=python&logoColor=ffdd54) ![FastAPI](https://img.shields.io/badge/FastAPI-088A85?style=for-the-badge&logo=fastapi&logoColor=white)
 
 
@@ -22,9 +46,10 @@
 
 **Management:** ![Trello](https://img.shields.io/badge/Trello-0080FF?style=for-the-badge&logo=Trello&logoColor=white) ![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
 
-**Third partyAPI:  [Spooncular](https://spoonacular.com/ "Spooncular")**
+**Third party API:  [Spooncular](https://spoonacular.com/ "Spooncular")**
 
 ----
+
 ### Future developing plans
 
 - add amount of ingredients in the fridge;
